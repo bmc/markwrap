@@ -51,7 +51,7 @@ your `project/build/` directory):
 
     val wikitext = "org.eclipse.mylyn.wikitext" % "wikitext.textile" %
                    "0.9.4.I20090220-1600-e3x"
-    val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.2-14"
+    val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.3-14"
 
 **NOTES**
 
