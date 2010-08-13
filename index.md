@@ -48,13 +48,10 @@ your `project/build/` directory):
     val t_repo = "t_repo" at
         "http://tristanhunt.com:8081/content/groups/public/"
     val newReleaseToolsRepository = ScalaToolsSnapshots
-    val orgClapperRepo = "clapper.org Maven Repository" at
-        "http://maven.clapper.org"
 
     val wikitext = "org.eclipse.mylyn.wikitext" % "wikitext.textile" %
                    "0.9.4.I20090220-1600-e3x"
     val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.2-14"
-    val grizzled = "org.clapper" %% "grizzled-scala" % "0.7.3"
 
 **NOTES**
 
@@ -64,8 +61,7 @@ your `project/build/` directory):
    you are building with Scala 2.8.0. See the [SBT cross-building][] page
    for details.
    
-2. You *must* specify the `tristanhunt.com` and `ScalaToolsSnapshots`
-   repositories, in addition to the `maven.clapper.org` repository.
+2. You *must* specify the `tristanhunt.com` and `ScalaToolsSnapshots`.
    Similarly, you must provide the dependencies on Knockoff and Mylyn. Even
    though those additional repositories and artifacts are in the published
    MarkWrap Maven `pom.xml`, SBT will not read them. Under the covers, SBT
