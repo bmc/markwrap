@@ -6,8 +6,8 @@ layout: withTOC
 # Introduction
 
 The MarkWrap library (pronounced "mark wrap" or "more crap", depending on
-your preference) is a Scala library that provides a unified API for using
-various underlying lightweight markup APIs. Currently, it supports:
+your preference) is a unified Scala API for various underlying lightweight
+markup APIs. Currently, it supports:
 
 * [Markdown][], via the [Knockoff][] parser.
 * [Textile][], via the Eclipse [Mylyn][] *wikitext* parser API.
