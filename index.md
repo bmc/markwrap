@@ -120,24 +120,24 @@ The following values are supported:
   [Knockoff][] API.
 
   - **Corresponding MIME type:** text/markdown
-  - **Corresponding file extensions**: ".md", ".markdown"
+  - **Corresponding file extensions**: `.md`, `.markdown`
 
 * `MarkupType.Textile`: The [Textile][] markup language,
   as parsed by the Eclipse [Mylyn][] *wikitext* parser API.
 
   - **Corresponding MIME type:** text/textile
-  - **Corresponding file extension**: ".textile"
+  - **Corresponding file extension**: `.textile`
 
 * `MarkupType.HTML`and `MarkupType.XHTML`: Pass-through HTML and XHTML.
 
   - **Corresponding MIME types:** text/html, text/xhtml
-  - **Corresponding file extensions**: ".htm, ".html", ".xhtm", ".xhtml"
+  - **Corresponding file extensions**: `.htm, `.html`, `.xhtm`, `.xhtml`
 
 * `MarkupType.PlainText`: Plain text, which is simply wrapped in `<pre>`
   and `</pre>` tags.
 
   - **Corresponding MIME types:** text/plain
-  - **Corresponding file extensions**: ".htm, ".html", ".xhtm", ".xhtml"
+  - **Corresponding file extensions**: `.htm, `.html`, `.xhtm`, `.xhtml`
 
 ### Examples
 
@@ -162,10 +162,10 @@ The following values are supported:
     val parser1 = MarkWrap.parserFor(MarkupType.Textile)
     
     // Using the MIME type
-    val parser2 = MarkWrap.parserFor("text/textile)
+    val parser2 = MarkWrap.parserFor("text/textile")
 
     // Using a File object
-    val parser3 = MarkWrap.parserFor(new java.io.File("foo.textile))
+    val parser3 = MarkWrap.parserFor(new java.io.File("foo.textile"))
 
 #### Getting a pass-through HTML "parser"
 
