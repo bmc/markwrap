@@ -100,16 +100,6 @@ class MarkWrapScalaProject(info: ProjectInfo)
     // snuggletex-core is needed by knockoff
     val snuggletex = "uk.ac.ed.ph.snuggletex" % "snuggletex-core" % "1.2.2"
 
-/*
-    JRST -> RST in Java. See http://jrst.labs.libre-entreprise.org/jrst/en/
-
-    WARNING: It pulls down a LOT of crap.
-
-    val jrst = "org.nuiton.jrst" % "jrst" % "1.1.1"
-    val dom4j = "dom4j" % "dom4j" % "1.6.1"
-    val xalan = "xalan" % "xalan" % "2.7.1"
-*/
-
     /* ---------------------------------------------------------------------- *\
                           Private Helper Methods
     \* ---------------------------------------------------------------------- */
