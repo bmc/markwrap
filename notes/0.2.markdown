@@ -1,3 +1,4 @@
+* Added tests for remaining parser and document types.
 * Now published to the [Scala Tools Maven repository][], which [SBT][]
   includes by default. Thus, if you're using SBT, it's longer necessary to
   specify a custom repository to find this artifact.
