@@ -60,10 +60,12 @@ your `project/build/` directory):
     val t_repo = "t_repo" at
         "http://tristanhunt.com:8081/content/groups/public/"
     val newReleaseToolsRepository = ScalaToolsSnapshots
+    val orgClapper = "org.clapper Maven repo" at "http://maven.clapper.org/
 
     val wikitext = "org.eclipse.mylyn.wikitext" % "wikitext.textile" %
                    "0.9.4.I20090220-1600-e3x"
     val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.3-14"
+    val markwrap = "org.clapper" %% "markwrap" % "0.1"
 
 **NOTES**
 
