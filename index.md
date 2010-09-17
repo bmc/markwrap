@@ -17,27 +17,39 @@ markup APIs. Currently, it supports:
 # Installation
 
 The easiest way to install the MarkWrap library is to download a
-pre-compiled jar from the [*clapper.org* Maven repository][]. However, you
-can also get certain build tools to download it for you.
+pre-compiled jar from the [Scala Tools Maven repository][]. However, you
+can also get certain build tools to download it for you automatically.
 
 ## Installing for Maven
 
-If you're using [Maven][], you can get MarkWrap from the
-[*clapper.org* Maven Repository][]. The relevant pieces of information are:
+If you're using [Maven][], you can simply tell Maven to get MarkWrap
+from the [Scala Tools Maven repository][]. The relevant pieces of
+information are:
 
 * Group ID: `org.clapper`
 * Artifact ID: `markwrap_2.8.0`
-* Version: `0.1`
+* Version: `0.2`
 * Type: `jar`
-* Repository: `http://maven.clapper.org/`
+* Repository: `http://www.scala-tools.org/repo-releases/`
 
 For example:
+
+    <repositories>
+      <repository>
+        <id>scala-tools.org</id>
+          <name>Scala-tools Maven2 Repository</name>
+          <url>http://scala-tools.org/repo-releases</url>
+      </repository>
+    </repositories>
 
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>markwrap_2.8.0</artifactId>
-      <version>0.1</version>
+      <version>0.2</version>
     </dependency>
+
+For more information on using Maven and Scala, see Josh Suereth's
+[Scala Maven Guide][].
 
 ## Using with SBT
 
@@ -60,7 +72,7 @@ your `project/build/` directory):
    Scala version you're using into the artifact ID. It will *only* work if
    you are building with Scala 2.8.0. See the [SBT cross-building][] page
    for details.
-   
+  
 2. You *must* specify the `tristanhunt.com` and `ScalaToolsSnapshots`.
    Similarly, you must provide the dependencies on Knockoff and Mylyn. Even
    though those additional repositories and artifacts are in the published
@@ -69,6 +81,10 @@ your `project/build/` directory):
    repositories from Maven POM files. See
    [Library Management Maven/Ivy section][] in the [SBT Manual][] for
    details. Also see this [email thread][SBT-repo-email-thread].
+3. Prior to MarkWrap, version 0.1, you also had to specify the location of
+   the *clapper.org* custom Maven repository. With version 0.1, however,
+   MarkWrap is now being published to the [Scala Tools Maven repository][],
+   which SBT automatically searches.
 
 # Building from Source
 
@@ -302,8 +318,9 @@ request. Along with any patch you send:
 [GitHub]: http://github.com/bmc/
 [downloads area]: http://github.com/bmc/markwrap/downloads
 [API Documentation]: api/
-[*clapper.org* Maven repository]: http://maven.clapper.org/org/clapper/
 [Maven]: http://maven.apache.org/
+[Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
+[Scala Maven Guide]: http://www.scala-lang.org/node/345
 [Knockoff]: http://tristanhunt.com/projects/knockoff/
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Textile]: http://textile.thresholdstate.com/
