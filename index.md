@@ -83,10 +83,6 @@ your `project/build/` directory):
    repositories from Maven POM files. See
    [Library Management Maven/Ivy section][] in the [SBT Manual][] for
    details. Also see this [email thread][SBT-repo-email-thread].
-3. Prior to MarkWrap, version 0.1, you also had to specify the location of
-   the *clapper.org* custom Maven repository. With version 0.1, however,
-   MarkWrap is now being published to the [Scala Tools Maven repository][],
-   which SBT automatically searches.
 
 # Building from Source
 
