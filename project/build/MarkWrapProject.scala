@@ -52,12 +52,6 @@ class MarkWrapScalaProject(info: ProjectInfo)
 
     override def compileOptions = Unchecked :: super.compileOptions.toList
 
-    // 2.8 and xsbt: Override documentOptions, because they're for 2.7, not
-    // 2.8, and they've changed.
-    private val docTitle = projectName + " " + projectVersion + " API"
-    override def documentOptions = List(CompoundDocOption("-doc-title",
-                                                          docTitle))
-                                                     
     override def parallelExecution = true // why not?
 
     /* ---------------------------------------------------------------------- *\
@@ -95,7 +89,7 @@ class MarkWrapScalaProject(info: ProjectInfo)
 
     val wikitext = "org.eclipse.mylyn.wikitext" % "wikitext.textile" %
                    "0.9.4.I20090220-1600-e3x"
-    val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.3-14"
+    val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.3-15"
     // snuggletex-core is needed by knockoff
     val snuggletex = "uk.ac.ed.ph.snuggletex" % "snuggletex-core" % "1.2.2"
 
