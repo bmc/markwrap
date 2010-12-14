@@ -142,7 +142,7 @@ The following values are supported:
   - **Corresponding MIME type:** text/textile
   - **Corresponding file extension**: `.textile`
 
-* `MarkupType.HTML`and `MarkupType.XHTML`: Pass-through HTML and XHTML.
+* `MarkupType.HTML` and `MarkupType.XHTML`: Pass-through HTML and XHTML.
 
   - **Corresponding MIME types:** text/html, text/xhtml
   - **Corresponding file extensions**: `.htm, `.html`, `.xhtm`, `.xhtml`
