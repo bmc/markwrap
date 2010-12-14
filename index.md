@@ -27,8 +27,8 @@ from the [Scala Tools Maven repository][]. The relevant pieces of
 information are:
 
 * Group ID: `org.clapper`
-* Artifact ID: `markwrap_2.8.0`
-* Version: `0.2`
+* Artifact ID: `markwrap_2.8.1`
+* Version: `0.2.1`
 * Type: `jar`
 * Repository: `http://www.scala-tools.org/repo-releases/`
 
@@ -44,9 +44,11 @@ For example:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>markwrap_2.8.0</artifactId>
-      <version>0.2</version>
+      <artifactId>markwrap_2.8.1</artifactId>
+      <version>0.2.1</version>
     </dependency>
+
+Version 0.2.1 is available for Scala 2.8.0 and 2.8.1.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -65,15 +67,15 @@ your `project/build/` directory):
     val wikitext = "org.eclipse.mylyn.wikitext" % "wikitext.textile" %
                    "0.9.4.I20090220-1600-e3x"
     val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.3-14"
-    val markwrap = "org.clapper" %% "markwrap" % "0.1"
+    val markwrap = "org.clapper" %% "markwrap" % "0.2.1"
 
 **NOTES**
 
-1. The first doubled percent is *not* a typo. It tells SBT to treat
-   the artifact as a cross-built library and automatically inserts the
-   Scala version you're using into the artifact ID. It will *only* work if
-   you are building with Scala 2.8.0. See the [SBT cross-building][] page
-   for details.
+1. The first doubled percent is *not* a typo. It tells SBT to treat the
+   artifact as a cross-built library and automatically inserts the Scala
+   version you're using into the artifact ID. It will *only* work if you
+   are building with Scala 2.8.0 or 2.8.1. See the [SBT cross-building][]
+   page for details.
   
 2. You *must* specify the `tristanhunt.com` and `ScalaToolsSnapshots`.
    Similarly, you must provide the dependencies on Knockoff and Mylyn. Even
