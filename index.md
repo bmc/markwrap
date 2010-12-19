@@ -325,7 +325,7 @@ request. Along with any patch you send:
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Textile]: http://textile.thresholdstate.com/
 [Mylyn]: http://www.eclipse.org/mylyn/
-[MarkWrap web site]: http://bmc.github.com/markwrap/
+[MarkWrap web site]: http://software.clapper.org/markwrap/
 [bmc@clapper.org]: mailto:bmc@clapper.org
 [Brian M. Clapper]: mailto:bmc@clapper.org
 [changelog]: CHANGELOG.html

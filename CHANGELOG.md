@@ -18,4 +18,4 @@ Version 0.1:
 * Extracted from the [Grizzled Scala][] library and repackaged, to reduce
   transitive dependencies in [Grizzled Scala][].
   
-[Grizzled Scala]: http://bmc.github.com/grizzled-scala/
+[Grizzled Scala]: http://software.clapper.org/grizzled-scala/
