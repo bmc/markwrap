@@ -322,7 +322,7 @@ request. Along with any patch you send:
 [Textile]: http://textile.thresholdstate.com/
 [Mylyn]: http://www.eclipse.org/mylyn/
 [FuseSource WikiText fork]: https://github.com/fusesource/wikitext
-[MarkWrap web site]: http://bmc.github.com/markwrap/
+[MarkWrap web site]: http://software.clapper.org/markwrap/
 [bmc@clapper.org]: mailto:bmc@clapper.org
 [Brian M. Clapper]: mailto:bmc@clapper.org
 [changelog]: CHANGELOG.html
