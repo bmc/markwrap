@@ -1,7 +1,20 @@
----
-title: Change log for MarkWrap
-layout: default
----
+
+Version 0.3:
+
+* Now uses [PegDown][] to parse [Markdown][], instead of [Knockoff][].
+* Now uses [FuseSource WikiText fork][] of Eclipse Mylyn Wikitext.
+* Now available for Scala 2.9.0, as well as 2.8.1 and 2.8.0.
+
+[PegDown]: http://pegdown.org
+[Markdown]: http://daringfireball.net/projects/markdown/
+[Knockoff]: http://tristanhunt.com/projects/knockoff/
+[FuseSource WikiText fork]: https://github.com/fusesource/wikitext
+
+Version 0.2.1:
+
+* Now compiles against [Scala][] 2.8.1, as well as 2.8.0.
+
+[Scala]: http://www.scala-lang.org/
 
 Version 0.2:
 

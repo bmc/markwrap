@@ -9,8 +9,9 @@ The MarkWrap library (pronounced "mark wrap" or "more crap", depending on
 your preference) is a unified Scala API for various underlying lightweight
 markup APIs. Currently, it supports:
 
-* [Markdown][], via the [Knockoff][] parser.
-* [Textile][], via the Eclipse [Mylyn][] *wikitext* parser API.
+* [Markdown][], via the [PegDown][] parser.
+* [Textile][], via the [FuseSource WikiText fork][] of then Eclipse
+  [Mylyn][] *wikitext* parser API.
 * An internal handler that wraps plain text in `<pre>` and `</pre>` tags.
 * An internal handler that simply passes HTML straight through.
 
@@ -321,10 +322,11 @@ request. Along with any patch you send:
 [Maven]: http://maven.apache.org/
 [Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
 [Scala Maven Guide]: http://www.scala-lang.org/node/345
-[Knockoff]: http://tristanhunt.com/projects/knockoff/
+[PegDown]: http://pegdown.org
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Textile]: http://textile.thresholdstate.com/
 [Mylyn]: http://www.eclipse.org/mylyn/
+[FuseSource WikiText fork]: https://github.com/fusesource/wikitext
 [MarkWrap web site]: http://bmc.github.com/markwrap/
 [bmc@clapper.org]: mailto:bmc@clapper.org
 [Brian M. Clapper]: mailto:bmc@clapper.org
