@@ -85,19 +85,21 @@ class MarkWrapScalaProject(info: ProjectInfo)
 
     // Repositories
     val newReleaseToolsRepository = ScalaToolsSnapshots
-    val t_repo = "t_repo" at
-        "http://tristanhunt.com:8081/content/groups/public/"
-    val snug_repo = "uk-releases" at "http://www2.ph.ed.ac.uk/maven2/"
 
     // Artifacts
 
-    val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
+    val wikitext = "org.fusesource.wikitext" % "textile-core" % "1.3"
+    val pegdown = "org.pegdown" % "pegdown" % "1.0.1"
 
-    val wikitext = "org.eclipse.mylyn.wikitext" % "wikitext.textile" %
-                   "0.9.4.I20090220-1600-e3x"
-    val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.3-14"
-    // snuggletex-core is needed by knockoff
-    val snuggletex = "uk.ac.ed.ph.snuggletex" % "snuggletex-core" % "1.2.2"
+    val (scalatestArtifact, scalatestVersion) = buildScalaVersion match
+    {
+        case "2.8.0"           => ("scalatest", "1.3")
+        case "2.8.1"           => ("scalatest", "1.3")
+        case "2.9.0"           => ("scalatest_2.9.0", "1.4.1")
+        case n                 => error("Unsupported Scala version " + n)
+    }
+
+    val scalatest = "org.scalatest" % scalatestArtifact % scalatestVersion % "test"
 
     /* ---------------------------------------------------------------------- *\
                           Private Helper Methods

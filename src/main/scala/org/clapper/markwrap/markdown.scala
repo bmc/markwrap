@@ -59,7 +59,7 @@ private[markwrap] class MarkdownParser extends MarkWrapParser
      */
     def parseToHTML(source: Source): String =
     {
-        import com.tristanhunt.knockoff.DefaultDiscounter._
-        toXHTML(knockoff(source mkString "")).toString
+        import org.pegdown.{PegDownProcessor, Extensions}
+        new PegDownProcessor(Extensions.ALL).markdownToHtml(source mkString "")
     }
 }

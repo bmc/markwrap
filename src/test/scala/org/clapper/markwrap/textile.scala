@@ -60,7 +60,7 @@ class TextileTest extends FunSuite
             ("Trademark(tm)",      "<p>Trademark&#8482;</p>"),
             ("Registered(r)",      "<p>Registered&#174;</p>"),
             ("Copyright(c)",       "<p>Copyright&#169;</p>"),
-            ("bc. foo",            "<pre><code>foo\n</code></pre>")
+            ("bc. foo",            "<pre><pre>foo\n</pre></pre>")
         )
 
         val parser = MarkWrap.parserFor(MarkupType.Textile)

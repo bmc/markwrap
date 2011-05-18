@@ -190,6 +190,7 @@ object MarkWrap
     MimeTypeMap.addMimeTypes(
         """text/markdown md markdown
           |text/textile textile
+          |text/html htm html
           |text/xhtml xhtml xhtm
           |text/plain txt TXT text TEXT cfg conf properties
         """.stripMargin
