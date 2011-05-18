@@ -58,9 +58,8 @@ class MarkWrapScalaProject(info: ProjectInfo)
                                    Tasks
     \* ---------------------------------------------------------------------- */
 
-    // Override the default "package" action to make it dependent on "test"
-    // and "doc".
-    override def packageAction = super.packageAction.dependsOn(test, doc)
+    // Override the default "package" action to make it dependent on "test".
+    override def packageAction = super.packageAction.dependsOn(test)
 
     /* ---------------------------------------------------------------------- *\
                                 Publishing
