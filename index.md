@@ -28,8 +28,8 @@ from the [Scala Tools Maven repository][]. The relevant pieces of
 information are:
 
 * Group ID: `org.clapper`
-* Artifact ID: `markwrap_2.8.1`
-* Version: `0.2.1`
+* Artifact ID: `markwrap_2.9.0`
+* Version: `0.3`
 * Type: `jar`
 * Repository: `http://www.scala-tools.org/repo-releases/`
 
@@ -45,11 +45,11 @@ For example:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>markwrap_2.8.1</artifactId>
-      <version>0.2.1</version>
+      <artifactId>markwrap_2.9.0</artifactId>
+      <version>0.3</version>
     </dependency>
 
-Version 0.2.1 is available for Scala 2.8.0 and 2.8.1.
+Version 0.3 is available for Scala 2.9.0, 2.8.1 and 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -60,15 +60,11 @@ If you're using [SBT][] (the Simple Build Tool) to compile your code, you
 can place the following lines in your project file (i.e., the Scala file in
 your `project/build/` directory):
 
-    val t_repo = "t_repo" at
-        "http://tristanhunt.com:8081/content/groups/public/"
     val newReleaseToolsRepository = ScalaToolsSnapshots
-    val orgClapper = "org.clapper Maven repo" at "http://maven.clapper.org/
 
-    val wikitext = "org.eclipse.mylyn.wikitext" % "wikitext.textile" %
-                   "0.9.4.I20090220-1600-e3x"
-    val knockoff = "com.tristanhunt" %% "knockoff" % "0.7.3-14"
-    val markwrap = "org.clapper" %% "markwrap" % "0.2.1"
+    val wikitext = "org.fusesource.wikitext" % "textile-core" % "1.3"
+    val pegdown = "org.pegdown" % "pegdown" % "1.0.1"
+    val markwrap = "org.clapper" %% "markwrap" % "0.3"
 
 **NOTES**
 
@@ -78,8 +74,7 @@ your `project/build/` directory):
    are building with Scala 2.8.0 or 2.8.1. See the [SBT cross-building][]
    page for details.
   
-2. You *must* specify the `tristanhunt.com` and `ScalaToolsSnapshots`.
-   Similarly, you must provide the dependencies on Knockoff and Mylyn. Even
+2. You must provide the dependencies on PegDown and Mylyn. Even
    though those additional repositories and artifacts are in the published
    MarkWrap Maven `pom.xml`, SBT will not read them. Under the covers, SBT
    uses [Apache Ivy][] for dependency management, and Ivy doesn't extract
@@ -301,7 +296,7 @@ The change log for all releases is [here][changelog].
 
 # Copyright and License
 
-MarkWrap is copyright &copy; 2009-2010 Brian M. Clapper and is released
+MarkWrap is copyright &copy; 2009-2011 Brian M. Clapper and is released
 under a [BSD License][].
 
 # Patches
