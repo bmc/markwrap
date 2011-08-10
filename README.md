@@ -8,7 +8,7 @@ your preference) is a Scala library that provides a unified API for using
 various underlying lightweight markup APIs. Currently, it supports:
 
 * [Markdown][], via the [PegDown][] parser.
-* [Textile][], via the [FuseSource WikiText fork][] of then Eclipse
+* [Textile][], via the [FuseSource WikiText fork][] of the Eclipse
   [Mylyn][] *wikitext* parser API.
 * An internal handler that wraps plain text in `<pre>` and `</pre>` tags.
 * An internal handler that simply passes HTML straight through.
