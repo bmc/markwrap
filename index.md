@@ -62,8 +62,6 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val wikitext = "org.fusesource.wikitext" % "textile-core" % "1.3"
-    val pegdown = "org.pegdown" % "pegdown" % "1.0.1"
     val markwrap = "org.clapper" %% "markwrap" % "0.4"
 
 #### 0.10.x
@@ -73,11 +71,7 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.10.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies ++= Seq(
-        "org.clapper" %% "markwrap" % "0.4",
-        "org.pegdown" % "pegdown" % "1.0.1",
-        "org.fusesource.wikitext" % "textile-core" % "1.3"
-    )
+    libraryDependencies += "org.clapper" %% "markwrap" % "0.4",
 
 # Building from Source
 
