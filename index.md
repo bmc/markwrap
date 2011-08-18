@@ -115,7 +115,7 @@ To obtain a parser, use the `org.clapper.markwrap.MarkWrap` object's
 The following values are supported:
 
 * `MarkupType.Markdown`: The [Markdown][] markup language, as parsed by the
-  [Knockoff][] API.
+  [PegDown][] API.
 
   - **Corresponding MIME type:** text/markdown
   - **Corresponding file extensions**: `.md`, `.markdown`
@@ -129,13 +129,13 @@ The following values are supported:
 * `MarkupType.HTML` and `MarkupType.XHTML`: Pass-through HTML and XHTML.
 
   - **Corresponding MIME types:** text/html, text/xhtml
-  - **Corresponding file extensions**: `.htm, `.html`, `.xhtm`, `.xhtml`
+  - **Corresponding file extensions**: `.htm`, `.html`, `.xhtm`, `.xhtml`
 
 * `MarkupType.PlainText`: Plain text, which is simply wrapped in `<pre>`
   and `</pre>` tags.
 
   - **Corresponding MIME types:** text/plain
-  - **Corresponding file extensions**: `.htm, `.html`, `.xhtm`, `.xhtml`
+  - **Corresponding file extensions**: `.txt`, `.text,` `.cfg`, `.conf`, `.properties`
 
 ### Examples
 
