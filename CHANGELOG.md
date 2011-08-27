@@ -3,6 +3,12 @@ title: "Change Log: MarkWrap, a unified API wrapper for lightweight markup APIs"
 layout: default
 ---
 
+Version 0.4.1:
+
+* For some reason, "publish" with Scala 2.9.0 causes some JSON error while
+  attempting to generate the documentation jar. Disabled publishing
+  documentation jar for now.
+
 Version 0.4:
 
 * Now builds against Scala 2.9.0.1, as well as Scala 2.9.0, 2.8.1 and 2.8.0.
