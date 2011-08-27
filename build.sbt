@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "0.4"
+version := "0.4.1"
 
 scalaVersion := "2.8.1"
 
@@ -63,6 +63,8 @@ publishTo <<= version {(v: String) =>
 }
 
 publishMavenStyle := true
+
+publishArtifact in packageDoc := false
 
 credentials += Credentials(Path.userHome / "src" / "mystuff" / "scala" /
                            "nexus.scala-tools.org.properties")
