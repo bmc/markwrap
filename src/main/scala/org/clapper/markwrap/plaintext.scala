@@ -40,20 +40,19 @@ package org.clapper.markwrap
 import scala.io.Source
 
 /**
- * The `PreWrapHandler` type handles a file that is presumed to be plain text.
- * The text is wrapped in "pre" tags and emitted as-is.
- */
-private[markwrap] class PreWrapHandler extends MarkWrapParser
-{
-    val markupType = MarkupType.PlainText
+  * The `PreWrapHandler` type handles a file that is presumed to be plain text.
+  * The text is wrapped in "pre" tags and emitted as-is.
+  */
+private[markwrap] class PreWrapHandler extends MarkWrapParser {
+  val markupType = MarkupType.PlainText
 
-    /**
-     * "Parse" a document that is assumed to be plain text.
-     *
-     * @param source  The `Source` from which to read the lines of text
-     *
-     * @return the HTML
-     */
-    def parseToHTML(source: Source): String =
-        "<pre>" + source.getLines().mkString("\n") + "</pre>"
+  /**
+    * "Parse" a document that is assumed to be plain text.
+    *
+    * @param source  The `Source` from which to read the lines of text
+    *
+    * @return the HTML
+    */
+  def parseToHTML(source: Source): String =
+    "<pre>" + source.getLines().mkString("\n") + "</pre>"
 }

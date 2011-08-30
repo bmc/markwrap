@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "0.4.1"
+version := "0.4.2"
 
 scalaVersion := "2.8.1"
 

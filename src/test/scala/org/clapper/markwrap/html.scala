@@ -38,34 +38,28 @@ import org.scalatest.FunSuite
 import org.clapper.markwrap._
 import java.io.File
 
-class HTMLTextTest extends FunSuite
-{
-    test("MarkWrap.HTML")
-    {
-        doType(MarkupType.HTML)
+class HTMLTextTest extends FunSuite {
+  test("MarkWrap.HTML") {
+    doType(MarkupType.HTML)
+  }
+
+  test("MarkWrap.XHTML") {
+    doType(MarkupType.XHTML)
+  }
+
+  private def doType(markupType: MarkupType): Unit = {
+    import scala.io.Source
+
+    val data = List(
+      ("<h1>Test</h2>",      "<h1>Test</h2>"), 
+      ("<p>_Test_</p>",      "<p>_Test_</p>")
+    )
+
+    val parser = MarkWrap.parserFor(markupType)
+    for ((input, expected) <- data) {
+      expect(expected, markupType.toString + " on " + input) {
+        parser.parseToHTML(input)
+      }
     }
-
-    test("MarkWrap.XHTML")
-    {
-        doType(MarkupType.XHTML)
-    }
-
-    private def doType(markupType: MarkupType): Unit =
-    {
-        import scala.io.Source
-
-        val data = List(
-            ("<h1>Test</h2>",      "<h1>Test</h2>"), 
-            ("<p>_Test_</p>",      "<p>_Test_</p>")
-        )
-
-        val parser = MarkWrap.parserFor(markupType)
-        for ((input, expected) <- data)
-        {
-            expect(expected, markupType.toString + " on " + input)
-            {
-                parser.parseToHTML(input)
-            }
-        }
-    }
+  }
 }

@@ -10,14 +10,14 @@
   modification, are permitted provided that the following conditions are
   met:
 
-  * Redistributions of source code must retain the above copyright notice,
+   * Redistributions of source code must retain the above copyright notice,
     this list of conditions and the following disclaimer.
 
-  * Redistributions in binary form must reproduce the above copyright
+   * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
 
-  * Neither the names "clapper.org", "MarkWrap", nor the names of its
+   * Neither the names "clapper.org", "MarkWrap", nor the names of its
     contributors may be used to endorse or promote products derived from
     this software without specific prior written permission.
 
@@ -36,10 +36,10 @@
 */
 
 /**
- * Defines a common API for various simple markup parsers. Currently, this
- * API supports Markdown and Textile, using different parsers behind a common
- * interface.
- */
+  * Defines a common API for various simple markup parsers. Currently, this
+  * API supports Markdown and Textile, using different parsers behind a common
+  * interface.
+  */
 package org.clapper.markwrap
 
 import scala.io.Source
@@ -47,97 +47,88 @@ import scala.io.Source
 import java.io.File
 
 /**
- * The common parser interface.
- */
-trait MarkWrapParser
-{
-    /**
-     * The markup type associated with the parser.
-     *
-     * @return the markup type.
-     */
-    val markupType: MarkupType
+  * The common parser interface.
+  */
+trait MarkWrapParser {
 
-    /**
-     * Convert the specified markup to an HTML fragment, without
-     * `html` or `body` tags. The resulting HTML fragment can then be
-     * included within an existing HTML document.
-     *
-     * @param source  the source containing the markup
-     *
-     * @return the HTML
-     */
-    def parseToHTML(source: Source): String
+  /** The markup type associated with the parser.
+    *
+    * @return the markup type.
+    */
+  val markupType: MarkupType
 
-    /**
-     * Convert the specified markup to an HTML fragment, without
-     * `html` or `body` tags. The resulting HTML fragment can then be
-     * included within an existing HTML document.
-     *
-     * @param file  the file containing the markup
-     *
-     * @return the HTML
-     */
-    def parseToHTML(file: File): String =
-        parseToHTML(Source.fromFile(file))
+  /** Convert the specified markup to an HTML fragment, without
+    * `html` or `body` tags. The resulting HTML fragment can then be
+    * included within an existing HTML document.
+    *
+    * @param source  the source containing the markup
+    *
+    * @return the HTML
+    */
+  def parseToHTML(source: Source): String
 
-    /**
-     * Convert the specified markup to an HTML fragment, without
-     * `html` or `body` tags. The resulting HTML fragment can then be
-     * included within an existing HTML document.
-     *
-     * @param markup  the string containing the markup
-     *
-     * @return the HTML
-     */
-    def parseToHTML(markup: String): String =
-        parseToHTML(Source.fromString(markup))
+  /** Convert the specified markup to an HTML fragment, without
+    * `html` or `body` tags. The resulting HTML fragment can then be
+    * included within an existing HTML document.
+    *
+    * @param file  the file containing the markup
+    *
+    * @return the HTML
+    */
+  def parseToHTML(file: File): String =
+    parseToHTML(Source.fromFile(file))
 
-    /**
-     * Simple wrapper function that produces an XHTML-compliant document,
-     * complete with HTML, HEAD and BODY tags, from a markup document.
-     *
-     * @param markupSource  The <tt>Source</tt> from which to read the
-     *                      lines of markup
-     * @param title         The document title
-     * @param cssSource     Source for any CSS to be included, or None
-     * @param encoding      The encoding to use. Defaults to "UTF-8".
-     *
-     * @return the formatted HTML document.
-     */
-    def parseToHTMLDocument(markupSource: Source, 
-                            title: String,
-                            cssSource: Option[Source] = None,
-                            encoding: String  = "UTF-8"): String =
-    {
-        import scala.xml.parsing.XhtmlParser
+  /** Convert the specified markup to an HTML fragment, without
+    * `html` or `body` tags. The resulting HTML fragment can then be
+    * included within an existing HTML document.
+    *
+    * @param markup  the string containing the markup
+    *
+    * @return the HTML
+    */
+  def parseToHTML(markup: String): String =
+    parseToHTML(Source.fromString(markup))
 
-        val css = cssSource.map(src => src.getLines() mkString "\n").
-                            getOrElse("")
+  /** Simple wrapper function that produces an XHTML-compliant document,
+    * complete with HTML, HEAD and BODY tags, from a markup document.
+    *
+    * @param markupSource  The `Source` from which to read the
+    *                      lines of markup
+    * @param title         The document title
+    * @param cssSource     Source for any CSS to be included, or None
+    * @param encoding      The encoding to use. Defaults to "UTF-8".
+    *
+    * @return the formatted HTML document.
+    */
+  def parseToHTMLDocument(markupSource: Source, 
+                          title: String,
+                          cssSource: Option[Source] = None,
+                          encoding: String  = "UTF-8"): String = {
+    import scala.xml.parsing.XhtmlParser
 
-        // Inserting raw HTML in the body will cause it to be escaped. So,
-        // parse the HTML into a NodeSeq first. Note the the whole thing
-        // has to be wrapped in a single element, so it might as well
-        // be the <body> element.
+    val css = cssSource.map(src => src.getLines() mkString "\n").getOrElse("")
 
-        val htmlBody = "<body>" + parseToHTML(markupSource) + "</body>"
-        val htmlBodyNode = XhtmlParser(Source.fromString(htmlBody))
+    // Inserting raw HTML in the body will cause it to be escaped. So,
+    // parse the HTML into a NodeSeq first. Note the the whole thing
+    // has to be wrapped in a single element, so it might as well
+    // be the <body> element.
 
-        val contentType = "text/html; charset=" + encoding
-        val htmlTemplate =
-<html>
-<head>
-<title>{title}</title>
-<style type="text/css">
-{css}
-</style>
-<meta http-equiv="Content-Type" content={contentType}/>
-</head>
-{htmlBodyNode}
-</html>
+    val htmlBody = "<body>" + parseToHTML(markupSource) + "</body>"
+    val htmlBodyNode = XhtmlParser(Source.fromString(htmlBody))
 
-        htmlTemplate.toString
-    }
+    val contentType = "text/html; charset=" + encoding
+    val htmlTemplate =
+      <html>
+        <head>
+        <title>{title}</title>
+        <style type="text/css">{css}</style>
+        <meta http-equiv="Content-Type" content={contentType}/>
+        </head>
+        {htmlBodyNode}
+      </html>
+
+    htmlTemplate.toString
+  }
 }
 
 /**
@@ -148,105 +139,97 @@ sealed abstract class MarkupType(val name: String, val mimeType: String)
 /**
  * Defines the various supported lightweight markup types.
  */
-object MarkupType
-{
-    /**
-     * Markup type for Markdown. Text is transformed to HTML via Markdown
-     * parser.
-     */
-    case object Markdown extends MarkupType("markdown", "text/markdown")
+object MarkupType {
+  /**
+   * Markup type for Markdown. Text is transformed to HTML via Markdown
+   * parser.
+   */
+  case object Markdown extends MarkupType("markdown", "text/markdown")
 
-    /**
-     * Markup type for Textile. Text is transformed to HTML via Textile
-     * parser.
-     */
-    case object Textile extends MarkupType("textile", "text/textile")
+  /**
+   * Markup type for Textile. Text is transformed to HTML via Textile
+   * parser.
+   */
+  case object Textile extends MarkupType("textile", "text/textile")
 
-    /**
-     * Markup type for HTML. Text is emitted as-is.
-     */
-    case object HTML extends MarkupType("html", "text/html")
+  /**
+   * Markup type for HTML. Text is emitted as-is.
+   */
+  case object HTML extends MarkupType("html", "text/html")
 
-    /**
-     * Markup type for XHTML. Text is emitted as-is.
-     */
-    case object XHTML extends MarkupType("xhtml", "text/xhtml")
+  /**
+   * Markup type for XHTML. Text is emitted as-is.
+   */
+  case object XHTML extends MarkupType("xhtml", "text/xhtml")
 
-    /**
-     * Markup type for plain text. Text is wrapped in "pre" tags
-     * and emitted as-is.
-     */
-    case object PlainText extends MarkupType("plaintext", "text/plain")
+  /**
+   * Markup type for plain text. Text is wrapped in "pre" tags
+   * and emitted as-is.
+   */
+  case object PlainText extends MarkupType("plaintext", "text/plain")
 }
 
 /**
  * Factory object to produce parsers for specific markup document types.
  */
-object MarkWrap
-{
-    import javax.activation.MimetypesFileTypeMap
+object MarkWrap {
+  import javax.activation.MimetypesFileTypeMap
 
-    private lazy val MimeTypeMap = new MimetypesFileTypeMap
-    MimeTypeMap.addMimeTypes(
-        """text/markdown md markdown
-          |text/textile textile
-          |text/html htm html
-          |text/xhtml xhtml xhtm
-          |text/plain txt TXT text TEXT cfg conf properties
-        """.stripMargin
-    )
+  private lazy val MimeTypeMap = new MimetypesFileTypeMap
+  MimeTypeMap.addMimeTypes(
+    """text/markdown md markdown
+    |text/textile textile
+    |text/html htm html
+    |text/xhtml xhtml xhtm
+    |text/plain txt TXT text TEXT cfg conf properties
+    """.stripMargin
+  )
 
-    /**
-     * MIME type to MarkupType mapping.
-     */
-    private val MimeTypes = Map(
-        MarkupType.Markdown.mimeType  -> MarkupType.Markdown,
-        MarkupType.Textile.mimeType   -> MarkupType.Textile,
-        MarkupType.HTML.mimeType      -> MarkupType.HTML,
-        MarkupType.XHTML.mimeType     -> MarkupType.XHTML,
-        MarkupType.PlainText.mimeType -> MarkupType.PlainText
-    )
+  /** MIME type to MarkupType mapping.
+    */
+  private val MimeTypes = Map(
+    MarkupType.Markdown.mimeType  -> MarkupType.Markdown,
+    MarkupType.Textile.mimeType   -> MarkupType.Textile,
+    MarkupType.HTML.mimeType      -> MarkupType.HTML,
+    MarkupType.XHTML.mimeType     -> MarkupType.XHTML,
+    MarkupType.PlainText.mimeType -> MarkupType.PlainText
+  )
 
-    /**
-     * Get a parser for the specified type.
-     *
-     * @param parserType  the parser type
-     */
-    def parserFor(parserType: MarkupType): MarkWrapParser = parserType match
-    {
-        case MarkupType.Markdown  => new MarkdownParser
-        case MarkupType.Textile   => new TextileParser
-        case MarkupType.HTML      => new VerbatimHandler
-        case MarkupType.XHTML     => new VerbatimHandler
-        case MarkupType.PlainText => new PreWrapHandler
-    }
+  /** Get a parser for the specified type.
+    *
+    * @param parserType  the parser type
+    */
+  def parserFor(parserType: MarkupType): MarkWrapParser = parserType match {
+    case MarkupType.Markdown  => new MarkdownParser
+    case MarkupType.Textile   => new TextileParser
+    case MarkupType.HTML      => new VerbatimHandler
+    case MarkupType.XHTML     => new VerbatimHandler
+    case MarkupType.PlainText => new PreWrapHandler
+  }
 
-    /**
-     * Get a parser for the specified MIME type.
-     *
-     * @param mimeType  the MIME type
-     *
-     * @return the parser.
-     *
-     * @throws IllegalArgumentException unsupported MIME type
-     */
-    def parserFor(mimeType: String): MarkWrapParser =
-    {
-        def BadMimeType = 
-            throw new IllegalArgumentException("Unknown MIME type: " + mimeType)
+  /** Get a parser for the specified MIME type.
+    *
+    * @param mimeType  the MIME type
+    *
+    * @return the parser.
+    *
+    * @throws IllegalArgumentException unsupported MIME type
+    */
+  def parserFor(mimeType: String): MarkWrapParser = {
+    def BadMimeType = 
+      throw new IllegalArgumentException("Unknown MIME type: " + mimeType)
 
-        MimeTypes.get(mimeType).map(p => parserFor(p)).getOrElse(BadMimeType)
-    }
+    MimeTypes.get(mimeType).map(p => parserFor(p)).getOrElse(BadMimeType)
+  }
 
-    /**
-     * Get a parser for the specified file.
-     *
-     * @param f  the file
-     *
-     * @return the parser.
-     *
-     * @throws IllegalArgumentException unsupported MIME type
-     */
-    def parserFor(f: File): MarkWrapParser =
-        parserFor(MimeTypeMap.getContentType(f))
+  /** Get a parser for the specified file.
+    *
+    * @param f  the file
+    *
+    * @return the parser.
+    *
+    * @throws IllegalArgumentException unsupported MIME type
+    */
+  def parserFor(f: File): MarkWrapParser =
+    parserFor(MimeTypeMap.getContentType(f))
 }

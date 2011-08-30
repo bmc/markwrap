@@ -38,23 +38,19 @@ import org.scalatest.FunSuite
 import org.clapper.markwrap._
 import scala.io.Source
 
-class PlainTextTest extends FunSuite
-{
-    test("MarkWrap.PlainText")
-    {
-        val data = List(
-            ("Test",        "<pre>Test</pre>"), 
-            ("_Test_",      "<pre>_Test_</pre>"),
-            ("foo\nbar\n",  "<pre>foo\nbar</pre>")
-        )
+class PlainTextTest extends FunSuite {
+  test("MarkWrap.PlainText") {
+    val data = List(
+      ("Test",        "<pre>Test</pre>"), 
+      ("_Test_",      "<pre>_Test_</pre>"),
+      ("foo\nbar\n",  "<pre>foo\nbar</pre>")
+    )
 
-        val parser = MarkWrap.parserFor(MarkupType.PlainText)
-        for ((input, expected) <- data)
-        {
-            expect(expected, "Plain text transform on " + input)
-            {
-                parser.parseToHTML(input)
-            }
-        }
+    val parser = MarkWrap.parserFor(MarkupType.PlainText)
+    for ((input, expected) <- data) {
+      expect(expected, "Plain text transform on " + input) {
+        parser.parseToHTML(input)
+      }
     }
+  }
 }

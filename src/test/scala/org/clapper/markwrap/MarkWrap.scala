@@ -39,65 +39,57 @@ import org.clapper.markwrap._
 import java.io.File
 
 /**
- * Tests the grizzled.parsing.markup Markdown functions.
- */
-class MarkWrapTest extends FunSuite
-{
-    test("MarkWrap.parserFor")
-    {
-        val fData = List(
-            (MarkupType.Markdown,  "foo.md"),
-            (MarkupType.Markdown,  "foo.markdown"),
-            (MarkupType.Textile,   "foo.textile"),
-            (MarkupType.XHTML,     "foo.xhtml"),
-            (MarkupType.XHTML,     "foo.xhtm"),
-            (MarkupType.XHTML,     "foo.htm"),
-            (MarkupType.XHTML,     "foo.html"),
-            (MarkupType.PlainText, "foo.text"),
-            (MarkupType.PlainText, "foo.txt"),
-            (MarkupType.PlainText, "foo.properties"),
-            (MarkupType.PlainText, "foo.cfg"),
-            (MarkupType.PlainText, "foo.conf")
-        )
+  * Tests the grizzled.parsing.markup Markdown functions.
+  */
+class MarkWrapTest extends FunSuite {
+  test("MarkWrap.parserFor") {
+    val fData = List(
+      (MarkupType.Markdown,  "foo.md"),
+      (MarkupType.Markdown,  "foo.markdown"),
+      (MarkupType.Textile,   "foo.textile"),
+      (MarkupType.XHTML,     "foo.xhtml"),
+      (MarkupType.XHTML,     "foo.xhtm"),
+      (MarkupType.XHTML,     "foo.htm"),
+      (MarkupType.XHTML,     "foo.html"),
+      (MarkupType.PlainText, "foo.text"),
+      (MarkupType.PlainText, "foo.txt"),
+      (MarkupType.PlainText, "foo.properties"),
+      (MarkupType.PlainText, "foo.cfg"),
+      (MarkupType.PlainText, "foo.conf")
+    )
 
-        val mtData = List(
-            (MarkupType.Markdown,  "text/markdown"),
-            (MarkupType.Textile,   "text/textile"),
-            (MarkupType.XHTML,     "text/html"),
-            (MarkupType.XHTML,     "text/xhtml"),
-            (MarkupType.PlainText, "text/plain")
-        )
+    val mtData = List(
+      (MarkupType.Markdown,  "text/markdown"),
+      (MarkupType.Textile,   "text/textile"),
+      (MarkupType.XHTML,     "text/html"),
+      (MarkupType.XHTML,     "text/xhtml"),
+      (MarkupType.PlainText, "text/plain")
+    )
 
-        val typeData = List(
-            MarkupType.Markdown,
-            MarkupType.Textile,
-            MarkupType.XHTML,
-            MarkupType.XHTML,
-            MarkupType.PlainText
-        )
+    val typeData = List(
+      MarkupType.Markdown,
+      MarkupType.Textile,
+      MarkupType.XHTML,
+      MarkupType.XHTML,
+      MarkupType.PlainText
+    )
 
-        for ((expected, fn) <- fData)
-        {
-            expect(expected, "MarkWrap.parserFor(new File(\"" + fn + "\"))")
-            {
-                MarkWrap.parserFor(new File(fn)).markupType
-            }
-        }
-
-        for ((expected, mimeType) <- mtData)
-        {
-            expect(expected, "MarkWrap.parserFor(\"" + mimeType + "\")")
-            {
-                MarkWrap.parserFor(mimeType).markupType
-            }
-        }
-
-        for (parserType <- typeData)
-        {
-            expect(parserType, "MarkWrap.parserFor(" + parserType + ")")
-            {
-                MarkWrap.parserFor(parserType).markupType
-            }
-        }
+    for ((expected, fn) <- fData) {
+      expect(expected, "MarkWrap.parserFor(new File(\"" + fn + "\"))") {
+        MarkWrap.parserFor(new File(fn)).markupType
+      }
     }
+
+    for ((expected, mimeType) <- mtData) {
+      expect(expected, "MarkWrap.parserFor(\"" + mimeType + "\")") {
+        MarkWrap.parserFor(mimeType).markupType
+      }
+    }
+
+    for (parserType <- typeData) {
+      expect(parserType, "MarkWrap.parserFor(" + parserType + ")") {
+        MarkWrap.parserFor(parserType).markupType
+      }
+    }
+  }
 }

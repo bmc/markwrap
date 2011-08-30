@@ -10,14 +10,14 @@
   modification, are permitted provided that the following conditions are
   met:
 
-  * Redistributions of source code must retain the above copyright notice,
+   * Redistributions of source code must retain the above copyright notice,
     this list of conditions and the following disclaimer.
 
-  * Redistributions in binary form must reproduce the above copyright
+   * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
 
-  * Neither the names "clapper.org", "MarkWrap", nor the names of its
+   * Neither the names "clapper.org", "MarkWrap", nor the names of its
     contributors may be used to endorse or promote products derived from
     this software without specific prior written permission.
 
@@ -40,26 +40,23 @@ package org.clapper.markwrap
 import scala.io.Source
 
 /**
- * The `MarkdownParser` class parses the Markdown markup language,
- * producing HTML. The current implementation uses the Scala-based Knockoff
- * parser.
- */
-private[markwrap] class MarkdownParser extends MarkWrapParser
-{
-    val markupType = MarkupType.Markdown
+  * The `MarkdownParser` class parses the Markdown markup language,
+  * producing HTML. The current implementation uses the Java-based Pegdown
+  * parser.
+  */
+private[markwrap] class MarkdownParser extends MarkWrapParser {
+  val markupType = MarkupType.Markdown
 
-    /**
-     * Parse a Markdown document, producing HTML. The generated HTML markup
-     * does not contain HTML or BODY tags, so it is suitable for embedding in
-     * existing HTML documents.
-     *
-     * @param source  The `Source` from which to read the lines of Markdown
-     *
-     * @return the formatted HTML
-     */
-    def parseToHTML(source: Source): String =
-    {
-        import org.pegdown.{PegDownProcessor, Extensions}
-        new PegDownProcessor(Extensions.ALL).markdownToHtml(source mkString "")
-    }
+  /** Parse a Markdown document, producing HTML. The generated HTML markup
+    * does not contain HTML or BODY tags, so it is suitable for embedding in
+    * existing HTML documents.
+    *
+    * @param source  The `Source` from which to read the lines of Markdown
+    *
+    * @return the formatted HTML
+    */
+  def parseToHTML(source: Source): String = {
+    import org.pegdown.{PegDownProcessor, Extensions}
+    new PegDownProcessor(Extensions.ALL).markdownToHtml(source mkString "")
+  }
 }

@@ -38,33 +38,29 @@ import org.scalatest.FunSuite
 import org.clapper.markwrap._
 
 /**
- * Tests the grizzled.parsing.markup Markdown functions.
- */
-class MarkdownTest extends FunSuite
-{
-    test("MarkdownParser.parseToHTML")
-    {
-        import scala.io.Source
+  * Tests the grizzled.parsing.markup Markdown functions.
+  */
+class MarkdownTest extends FunSuite {
+  test("MarkdownParser.parseToHTML") {
+    import scala.io.Source
 
-        val data = List(
-            ("*Test*",             "<p><em>Test</em></p>"),
-            ("_Test_",             "<p><em>Test</em></p>"),
-            ("**Test**",           "<p><strong>Test</strong></p>"),
-            ("__Test__",           "<p><strong>Test</strong></p>"),
-            ("___Test___",         "<p><strong><em>Test</em></strong></p>"),
-            ("***Test***",         "<p><strong><em>Test</em></strong></p>"),
-            ("abc\n===\n\ntest",   "<h1>abc</h1><p>test</p>")
-        )
+    val data = List(
+      ("*Test*",             "<p><em>Test</em></p>"),
+      ("_Test_",             "<p><em>Test</em></p>"),
+      ("**Test**",           "<p><strong>Test</strong></p>"),
+      ("__Test__",           "<p><strong>Test</strong></p>"),
+      ("___Test___",         "<p><strong><em>Test</em></strong></p>"),
+      ("***Test***",         "<p><strong><em>Test</em></strong></p>"),
+      ("abc\n===\n\ntest",   "<h1>abc</h1><p>test</p>")
+    )
 
-        val parser = MarkWrap.parserFor(MarkupType.Markdown)
-        expect(MarkupType.Markdown, "Markup type") {parser.markupType}
+    val parser = MarkWrap.parserFor(MarkupType.Markdown)
+    expect(MarkupType.Markdown, "Markup type") {parser.markupType}
 
-        for((input, expected) <- data)
-        {
-            expect(expected, "MarkdownParser.parseToHTML() on: " + input)
-            {
-                parser.parseToHTML(input)
-            }
-        }
+    for((input, expected) <- data) {
+      expect(expected, "MarkdownParser.parseToHTML() on: " + input) {
+        parser.parseToHTML(input)
+      }
     }
+  }
 }
