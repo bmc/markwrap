@@ -3,6 +3,16 @@ title: "Change Log: MarkWrap, a unified API wrapper for lightweight markup APIs"
 layout: default
 ---
 
+Version 0.4.3:
+
+* Now builds for [Scala][] 2.9.1, as well as 2.9.0-1, 2.9.0, 2.8.1, and 2.8.0.
+
+[Scala]: http://www.scala-lang.org/
+
+Version 0.4.2:
+
+* Converted code to conform with standard Scala coding style.
+
 Version 0.4.1:
 
 * For some reason, "publish" with Scala 2.9.0 causes some JSON error while
