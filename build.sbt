@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "0.4.2"
+version := "0.4.3"
 
 scalaVersion := "2.8.1"
 
@@ -14,7 +14,7 @@ scalaVersion := "2.8.1"
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
-crossScalaVersions := Seq("2.9.0-1", "2.9.0", "2.8.1", "2.8.0")
+crossScalaVersions := Seq("2.9.1", "2.9.0-1", "2.9.0", "2.8.1", "2.8.0")
 
 // ---------------------------------------------------------------------------
 // ScalaTest dependendency
@@ -24,7 +24,8 @@ libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
     val scalatestVersionMap = Map("2.8.0"   -> ("scalatest", "1.3"),
                                   "2.8.1"   -> ("scalatest_2.8.1", "1.5.1"),
                                   "2.9.0"   -> ("scalatest_2.9.0", "1.6.1"),
-                                  "2.9.0-1" -> ("scalatest_2.9.0-1", "1.6.1"))
+                                  "2.9.0-1" -> ("scalatest_2.9.0-1", "1.6.1"),
+                                  "2.9.1"   -> ("scalatest_2.9.0-1", "1.6.1"))
     val (scalatestArtifact, scalatestVersion) = scalatestVersionMap.getOrElse(
         sv, error("Unsupported Scala version: " + scalaVersion)
     )
@@ -32,18 +33,6 @@ libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
 }
 
 fork in Test := true
-
-// ---------------------------------------------------------------------------
-// Posterous-SBT
-
-libraryDependencies <<= (sbtVersion, scalaVersion, libraryDependencies) { (sbtv, scalav, deps) =>
-    if (scalav == "2.8.1")
-        deps :+ "net.databinder" %% "posterous-sbt" % ("0.3.0_sbt" + sbtv)
-    else
-        deps
-}
-
-(name in Posterous) := "MarkWrap"
 
 // ---------------------------------------------------------------------------
 // Other dependendencies
