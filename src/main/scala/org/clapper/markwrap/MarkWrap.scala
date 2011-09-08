@@ -104,30 +104,28 @@ trait MarkWrapParser {
                           title: String,
                           cssSource: Option[Source] = None,
                           encoding: String  = "UTF-8"): String = {
-    import scala.xml.parsing.XhtmlParser
 
     val css = cssSource.map(src => src.getLines() mkString "\n").getOrElse("")
 
-    // Inserting raw HTML in the body will cause it to be escaped. So,
-    // parse the HTML into a NodeSeq first. Note the the whole thing
-    // has to be wrapped in a single element, so it might as well
-    // be the <body> element.
+    // Don't use the XML Scala stuff. It can gag on HTML entities.
+    // Just build an HTML string.
 
     val htmlBody = "<body>" + parseToHTML(markupSource) + "</body>"
-    val htmlBodyNode = XhtmlParser(Source.fromString(htmlBody))
 
     val contentType = "text/html; charset=" + encoding
-    val htmlTemplate =
-      <html>
-        <head>
-        <title>{title}</title>
-        <style type="text/css">{css}</style>
-        <meta http-equiv="Content-Type" content={contentType}/>
-        </head>
-        {htmlBodyNode}
-      </html>
 
-    htmlTemplate.toString
+    """<html>
+      | <head>
+      | <title>{title}</title>
+      | <style type="text/css">
+    """.stripMargin +
+      css +
+    """ </style>
+      | <meta http-equiv="Content-Type" content={contentType}/>
+      |</head>
+     """.stripMargin +
+      htmlBody +
+     "</html>"
   }
 }
 
