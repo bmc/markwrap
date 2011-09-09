@@ -105,27 +105,26 @@ trait MarkWrapParser {
                           cssSource: Option[Source] = None,
                           encoding: String  = "UTF-8"): String = {
 
-    val css = cssSource.map(src => src.getLines() mkString "\n").getOrElse("")
-
     // Don't use the XML Scala stuff. It can gag on HTML entities.
     // Just build an HTML string.
 
-    val htmlBody = "<body>" + parseToHTML(markupSource) + "</body>"
+    val htmlBody = "<body>\n" + parseToHTML(markupSource) + "\n</body>\n"
 
     val contentType = "text/html; charset=" + encoding
 
+    val style = cssSource.map { s =>
+      "<style type='text/css'>" + s.getLines().mkString("\n") + "</style>\n"
+    }.getOrElse("")
+
     """<html>
-      | <head>
-      | <title>{title}</title>
-      | <style type="text/css">
+      |<head>
+      |<title>{title}</title>
     """.stripMargin +
-      css +
-    """ </style>
-      | <meta http-equiv="Content-Type" content={contentType}/>
-      |</head>
-     """.stripMargin +
-      htmlBody +
-     "</html>"
+    style +
+    "<meta http-equiv='Content-Type' content='" + contentType + "'/>\n" +
+    "</head>\n" +
+    htmlBody +
+     "</html>\n"
   }
 }
 

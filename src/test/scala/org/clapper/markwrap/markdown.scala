@@ -36,13 +36,12 @@
 
 import org.scalatest.FunSuite
 import org.clapper.markwrap._
-
+import scala.io.Source;
 /**
   * Tests the grizzled.parsing.markup Markdown functions.
   */
 class MarkdownTest extends FunSuite {
   test("MarkdownParser.parseToHTML") {
-    import scala.io.Source
 
     val data = List(
       ("*Test*",             "<p><em>Test</em></p>"),
@@ -60,6 +59,26 @@ class MarkdownTest extends FunSuite {
     for((input, expected) <- data) {
       expect(expected, "MarkdownParser.parseToHTML() on: " + input) {
         parser.parseToHTML(input)
+      }
+    }
+  }
+
+  test("MarkdownParser.parseToHTMLDocument and HTML entities") {
+
+    val data = List(
+      // markdown            result contains
+      ("&copy;",             "<p>&copy;</p>"),
+      ("&emdash;",           "<p>&emdash;</p>")
+    )
+
+    val parser = MarkWrap.parserFor(MarkupType.Markdown)
+    expect(MarkupType.Markdown, "Markup type") {parser.markupType}
+
+    for((input, expected) <- data) {
+      expect(true, "MarkdownParser.parseToHTMLDocument() on: " + input) {
+        val result = parser.parseToHTMLDocument(Source.fromString(input),
+                                                "", None)
+        result contains expected
       }
     }
   }

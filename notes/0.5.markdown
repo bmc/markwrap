@@ -2,4 +2,4 @@
   compose the document. First, there's no need; building the resulting
   string directly is more efficient. Second, HTML supports entities
   that XML does not, so using `scala.xml` can result in those entities
-  being handled improperly.
+  being improperly converted.
