@@ -3,6 +3,15 @@ title: "Change Log: MarkWrap, a unified API wrapper for lightweight markup APIs"
 layout: default
 ---
 
+Version 0.5:
+
+* `MarkWrapParser.parseToHTMLDocument()` no longer uses `scala.xml` to
+  compose the document. First, there's no need; building the resulting
+  string directly is more efficient. Second, HTML supports entities
+  that XML does not, so using `scala.xml` can result in those entities
+  being improperly converted.
+
+
 Version 0.4.3:
 
 * Now builds for [Scala][] 2.9.1, as well as 2.9.0-1, 2.9.0, 2.8.1, and 2.8.0.

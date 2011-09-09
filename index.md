@@ -28,7 +28,7 @@ from the [Scala Tools Maven repository][]. The relevant pieces of
 information are:
 
 * Group ID: `org.clapper`
-* Artifact ID: `markwrap_2.9.0-1`
+* Artifact ID: `markwrap_2.9.1`
 * Version: `0.5`
 * Type: `jar`
 * Repository: `http://www.scala-tools.org/repo-releases/`
@@ -45,7 +45,7 @@ For example:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>markwrap_2.9.0-1</artifactId>
+      <artifactId>markwrap_2.9.1</artifactId>
       <version>0.5</version>
     </dependency>
 
