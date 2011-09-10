@@ -91,6 +91,27 @@ class MarkdownTest extends FunSuite {
     }
   }
 
+  test("MarkdownParser.parseToHTMLDocument and title substitution") {
+
+    val data = List(
+      ("test document", "test title",
+       """<html>
+         |<head>
+         |<title>test title</title>""".stripMargin)
+    )
+
+    val parser = MarkWrap.parserFor(MarkupType.Markdown)
+    expect(MarkupType.Markdown, "Markup type") {parser.markupType}
+
+    for((input, title, expected) <- data) {
+      expect(true, "MarkdownParser.parseToHTMLDocument() on: " + input) {
+        val result = parser.parseToHTMLDocument(Source.fromString(input),
+                                                title, None)
+        result startsWith expected
+      }
+    }
+  }
+
   test("MarkdownParser.parseToHTMLDocument and HTML entities") {
 
     val data = List(

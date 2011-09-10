@@ -118,8 +118,7 @@ trait MarkWrapParser {
 
     """<html>
       |<head>
-      |<title>" + title + "</title>"
-    """.stripMargin +
+      |<title>""".stripMargin + title + "</title>" +
     style +
     "<meta http-equiv='Content-Type' content='" + contentType + "'/>\n" +
     "</head>\n" +
