@@ -62,7 +62,7 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val markwrap = "org.clapper" %% "markwrap" % "0.5"
+    val markwrap = "org.clapper" %% "markwrap" % "0.5.1"
 
 #### 0.10.x
 
@@ -71,7 +71,7 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.10.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "markwrap" % "0.5",
+    libraryDependencies += "org.clapper" %% "markwrap" % "0.5.1"
 
 # Building from Source
 
@@ -112,30 +112,55 @@ To obtain a parser, use the `org.clapper.markwrap.MarkWrap` object's
 * a markup language constant
 * a `java.io.File` object, whose extension is used to determine the MIME type.
 
-The following values are supported:
+### Parsing Markdown
 
-* `MarkupType.Markdown`: The [Markdown][] markup language, as parsed by the
-  [PegDown][] API.
+To get a [Markdown][] parser, call `MarkWrap.parserFor()` with:
 
-  - **Corresponding MIME type:** text/markdown
-  - **Corresponding file extensions**: `.md`, `.markdown`
+* the `MarkupType.Markdown` constant
+* the MIME type string "text/markdown"
+* A `java.io.File` object specifying a file with either a `.md` or `.markdown`
+  extension.
 
-* `MarkupType.Textile`: The [Textile][] markup language,
-  as parsed by the Eclipse [Mylyn][] *wikitext* parser API.
+[Markdown][] is parsed with [Pegdown][], instantiated with all of Pegdown's
+extension options *except* `HARDWRAPS`. This means that hard line wraps in
+your Markdown source are *not* passed through as `<br/>` elements in the
+HTML. To force a `<br/>` (a hard line wrap), use two or more spaces at the
+end of a Markdown line, which is how hard line wraps are handled in
+standard Markdown.
 
-  - **Corresponding MIME type:** text/textile
-  - **Corresponding file extension**: `.textile`
+### Parsing Textile
 
-* `MarkupType.HTML` and `MarkupType.XHTML`: Pass-through HTML and XHTML.
+To get a [Textile][] parser, call `MarkWrap.parserFor()` with:
 
-  - **Corresponding MIME types:** text/html, text/xhtml
-  - **Corresponding file extensions**: `.htm`, `.html`, `.xhtm`, `.xhtml`
+* the `MarkupType.Textile` constant
+* the MIME type string "text/textile"
+* A `java.io.File` object specifying a file with a `.textile` extension.
 
-* `MarkupType.PlainText`: Plain text, which is simply wrapped in `<pre>`
-  and `</pre>` tags.
+[Textile][] is parsed with the Eclipse [Mylyn][] *wikitext* parser API.
 
-  - **Corresponding MIME types:** text/plain
-  - **Corresponding file extensions**: `.txt`, `.text,` `.cfg`, `.conf`, `.properties`
+### Parsing raw HTML
+
+To get a passthrough parser for HTML or XHTML, call `MarkWrap.parserFor()`
+with:
+
+* the `MarkupType.HTML` or `Markup.XHTML` constants
+* one of the MIME type strings "text/html" or "text/xhtml"
+* A `java.io.File` object specifying a file with one of these extensions:
+  `.htm`, `.html`, `.xhtm`, `.xhtml`
+
+A passthrough HTML parser simply passing the HTML straight through,
+unmodified.
+
+### Handling plain text
+
+To get a plaintext-to-HTML parser, call `MarkWrap.parserFor()` with:
+
+* the `MarkupType.PlainText` constant
+* the MIME type string "text/plain"
+* A `java.io.File` object specifying a file with one of these extensions:
+  `.txt`, `.text,` `.cfg`, `.conf`, `.properties`
+
+The resulting plain text is simply wrapped in `<pre>` and `</pre>` tags.
 
 ### Examples
 
