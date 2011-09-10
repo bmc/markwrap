@@ -63,6 +63,34 @@ class MarkdownTest extends FunSuite {
     }
   }
 
+  test("No hard line wraps") {
+    val data = List(
+      ("test\n*test*",     "<p>test <em>test</em></p>"),
+
+      ("""
+         |* this is a list
+         |  with line breaks in it.
+         |* This is line two
+         |  of the list.
+       """.stripMargin,
+
+
+       """<ul>
+         |  <li>this is a list  with line breaks in it.</li>
+         |  <li>This is line two  of the list.</li>
+         |</ul>""".stripMargin),
+
+      ("soft  \nwrap\n",   "<p>soft<br/>wrap</p>")
+    )
+
+    val parser = MarkWrap.parserFor(MarkupType.Markdown)
+    for((input, expected) <- data) {
+      expect(expected, "MarkdownParser.parseToHTML() on: " + input) {
+        parser.parseToHTML(input)
+      }
+    }
+  }
+
   test("MarkdownParser.parseToHTMLDocument and HTML entities") {
 
     val data = List(

@@ -1,0 +1,14 @@
+* Now instantiates the underlying [Pegdown][] parser with the `HARDWRAPS`
+  option disabled, ensuring that hard linewraps in the Markdown source are
+  _not_ propagated automatically to the generated HTML. This is more
+  consistent with common usage. To force a newline, use two or more spaces
+  at the end of a line.
+* When calling `MarkWrap.parserFor()` on Markdown, the underlying code
+  returned an object that allocated a new Pegdown processor each time
+  `parseToHTML()` was called. That's silly, so the object now allocates a
+  Pegdown processor when it's allocated and re-uses it. Note that this
+  change makes the returned Markdown parser object *not* thread-safe, since
+  Pegdown is not thread-safe. (Just allocate one parser per thread, if
+  you're threading.)
+
+[Pegdown]: https://github.com/sirthias/pegdown

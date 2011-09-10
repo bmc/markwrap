@@ -39,6 +39,8 @@ package org.clapper.markwrap
 
 import scala.io.Source
 
+import org.pegdown.{PegDownProcessor, Extensions}
+
 /**
   * The `MarkdownParser` class parses the Markdown markup language,
   * producing HTML. The current implementation uses the Java-based Pegdown
@@ -46,6 +48,7 @@ import scala.io.Source
   */
 private[markwrap] class MarkdownParser extends MarkWrapParser {
   val markupType = MarkupType.Markdown
+  val pegDown = new PegDownProcessor(Extensions.ALL - Extensions.HARDWRAPS)
 
   /** Parse a Markdown document, producing HTML. The generated HTML markup
     * does not contain HTML or BODY tags, so it is suitable for embedding in
@@ -56,7 +59,6 @@ private[markwrap] class MarkdownParser extends MarkWrapParser {
     * @return the formatted HTML
     */
   def parseToHTML(source: Source): String = {
-    import org.pegdown.{PegDownProcessor, Extensions}
-    new PegDownProcessor(Extensions.ALL).markdownToHtml(source mkString "")
+    pegDown.markdownToHtml(source mkString "")
   }
 }
