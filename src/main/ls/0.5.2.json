@@ -5,7 +5,7 @@
  "version":"0.5.2",
  "description":"A unified API for converting various lightweight markup languages to HTML",
  "site":"http://software.clapper.org/markwrap/",
- "tags":["markdown","textile","markup","html","library","more crap"],
+ "tags":["markdown","textile","markup","html","library","crap"],
  "docs":"",
  "licenses": [{
    "name": "BSD",

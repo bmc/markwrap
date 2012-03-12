@@ -29,7 +29,7 @@ crossScalaVersions := Seq(
 seq(lsSettings :_*)
 
 (LsKeys.tags in LsKeys.lsync) := Seq(
-  "markdown", "textile", "markup", "html", "library", "more crap"
+  "markdown", "textile", "markup", "html", "library", "crap"
 )
 
 (description in LsKeys.lsync) <<= description(d => d)
