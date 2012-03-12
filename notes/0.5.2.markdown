@@ -1,0 +1,3 @@
+* Converted to build with SBT 0.11.2.
+* Added support for `ls.implicit.ly` metadata.
+* Now publishes to `oss.sonatype.org` (and, thence, to the Maven central repo).
