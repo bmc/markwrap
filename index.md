@@ -17,39 +17,32 @@ markup APIs. Currently, it supports:
 
 # Installation
 
-The easiest way to install the MarkWrap library is to download a
-pre-compiled jar from the [Scala Tools Maven repository][]. However, you
-can also get certain build tools to download it for you automatically.
+MarkWrap is published to the `oss.sonatype.org` repository;  Sonatype
+automatically pushes the artifacts to the  [Maven central repository][]. You
+can get download the MarkWrap library jar directly from the Maven
+repository. However, if you're using [Maven][] or [SBT][], you can just have
+those tools do the job for you.
 
 ## Installing for Maven
 
-If you're using [Maven][], you can simply tell Maven to get MarkWrap
-from the [Scala Tools Maven repository][]. The relevant pieces of
-information are:
+If you're using [Maven][], just specify the artifact, and Maven will do the
+rest for you:
 
 * Group ID: `org.clapper`
 * Artifact ID: `markwrap_2.9.1`
-* Version: `0.5`
+* Version: `0.5.2`
 * Type: `jar`
-* Repository: `http://www.scala-tools.org/repo-releases/`
 
 For example:
-
-    <repositories>
-      <repository>
-        <id>scala-tools.org</id>
-          <name>Scala-tools Maven2 Repository</name>
-          <url>http://scala-tools.org/repo-releases</url>
-      </repository>
-    </repositories>
 
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>markwrap_2.9.1</artifactId>
-      <version>0.5</version>
+      <version>0.5.2</version>
     </dependency>
 
-Version 0.5 is available for Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.1 and 2.8.0.
+Version 0.5 is available for Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and
+2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -62,16 +55,22 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val markwrap = "org.clapper" %% "markwrap" % "0.5.1"
+    val markwrap = "org.clapper" %% "markwrap" % "0.5.2"
 
-#### 0.10.x
+#### 0.11.x
 
-If you're using [SBT][] 0.10.x to compile your code, you can use the
+If you're using [SBT][] 0.11.x to compile your code, you can use the
 following line in your `build.sbt` file (for Quick Configuration). If
-you're using an SBT 0.10.x Full Configuration, you're obviously smart
+you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "markwrap" % "0.5.1"
+    libraryDependencies += "org.clapper" %% "markwrap" % "0.5.2"
+
+MarkWrap is also registered with [Doug Tangren][]'s excellent
+[ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install
+MarkWrap with
+
+    sbt> ls-install markwrap
 
 # Building from Source
 
@@ -326,7 +325,6 @@ request. Along with any patch you send:
 [downloads area]: http://github.com/bmc/markwrap/downloads
 [API Documentation]: api/
 [Maven]: http://maven.apache.org/
-[Scala Tools Maven repository]: http://www.scala-tools.org/repo-releases/
 [Scala Maven Guide]: http://www.scala-lang.org/node/345
 [PegDown]: http://pegdown.org
 [Markdown]: http://daringfireball.net/projects/markdown/
@@ -343,3 +341,5 @@ request. Along with any patch you send:
 [Library Management Maven/Ivy section]: http://code.google.com/p/simple-build-tool/wiki/LibraryManagement#Maven/Ivy
 [SBT Manual]: http://code.google.com/p/simple-build-tool/wiki/DocumentationHome
 [SBT-repo-email-thread]: http://groups.google.com/group/simple-build-tool/browse_thread/thread/470bba921252a167
+[ls.implicit.ly]: http://ls.implicit.ly
+[Maven central repository]: http://search.maven.org/

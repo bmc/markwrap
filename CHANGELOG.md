@@ -3,6 +3,12 @@ title: "Change Log: MarkWrap, a unified API wrapper for lightweight markup APIs"
 layout: default
 ---
 
+Version 0.5.2:
+
+* Converted to build with SBT 0.11.2.
+* Added support for `ls.implicit.ly` metadata.
+* Now publishes to `oss.sonatype.org` (and, thence, to the Maven central repo).
+
 Version 0.5.1:
 
 * Now instantiates the underlying [Pegdown][] parser with the `HARDWRAPS`
