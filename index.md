@@ -41,7 +41,7 @@ For example:
       <version>0.5.2</version>
     </dependency>
 
-Version 0.5 is available for Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and
+Version 0.5.2 is available for Scala 2.9.1, 2.9.0-1, 2.9.0, 2.8.2, 2.8.1 and
 2.8.0.
 
 For more information on using Maven and Scala, see Josh Suereth's
