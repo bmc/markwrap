@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "0.5.3"
+version := "0.5.4"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/markwrap/license.html"))
 
@@ -23,7 +23,7 @@ scalaVersion := "2.9.1"
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
 crossScalaVersions := Seq(
-  "2.9.1-1", "2.9.1", "2.9.0-1", "2.9.0", "2.8.2", "2.8.1", "2.8.0"
+  "2.9.2", "2.9.1-1", "2.9.1", "2.9.0-1", "2.9.0", "2.8.2", "2.8.1", "2.8.0"
 )
 
 seq(lsSettings :_*)
@@ -45,7 +45,8 @@ libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
                                   "2.9.0"   -> ("scalatest_2.9.0", "1.7.1"),
                                   "2.9.0-1" -> ("scalatest_2.9.0-1", "1.7.1"),
                                   "2.9.1"   -> ("scalatest_2.9.1", "1.7.1"),
-                                  "2.9.1-1"   -> ("scalatest_2.9.1", "1.7.1"))
+                                  "2.9.1-1" -> ("scalatest_2.9.1", "1.7.1"),
+                                  "2.9.2"   -> ("scalatest_2.9.1", "1.7.1"))
     val (scalatestArtifact, scalatestVersion) = scalatestVersionMap.getOrElse(
         sv, error("Unsupported Scala version: " + scalaVersion)
     )
