@@ -23,8 +23,8 @@ can get download the MarkWrap library jar directly from the Maven
 repository. However, if you're using [Maven][] or [SBT][], you can just have
 those tools do the job for you.
 
-Version 0.5.3 is available for Scala 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0, 2.8.2,
-2.8.1 and 2.8.0.
+Version 0.5.4 is available for Scala 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0,
+2.8.2, 2.8.1 and 2.8.0.
 
 ## Installing for Maven
 
@@ -32,16 +32,16 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `org.clapper`
-* Artifact ID: `markwrap_2.9.1`
-* Version: `0.5.3`
+* Artifact ID: `markwrap_2.9.2`
+* Version: `0.5.4`
 * Type: `jar`
 
 For example:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>markwrap_2.9.1</artifactId>
-      <version>0.5.3</version>
+      <artifactId>markwrap_2.9.2</artifactId>
+      <version>0.5.4</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -55,7 +55,7 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val markwrap = "org.clapper" %% "markwrap" % "0.5.3"
+    val markwrap = "org.clapper" %% "markwrap" % "0.5.4"
 
 #### 0.11.x
 
@@ -64,7 +64,7 @@ following line in your `build.sbt` file (for Quick Configuration). If
 you're using an SBT 0.11.x Full Configuration, you're obviously smart
 enough to figure out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "markwrap" % "0.5.3"
+    libraryDependencies += "org.clapper" %% "markwrap" % "0.5.4"
 
 MarkWrap is also registered with [Doug Tangren][]'s excellent
 [ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install

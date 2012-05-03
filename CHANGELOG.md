@@ -3,6 +3,10 @@ title: "Change Log: MarkWrap, a unified API wrapper for lightweight markup APIs"
 layout: default
 ---
 
+Version 0.5.4:
+
+* Added Scala 2.9.2 to the list of cross-built versions.
+
 Version 0.5.3:
 
 * Added Scala 2.9.1-1 to the list of cross-built versions.
