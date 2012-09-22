@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "0.5.4"
+version := "0.5.5"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/markwrap/license.html"))
 
@@ -15,7 +15,7 @@ description := (
   "A unified API for converting various lightweight markup languages to HTML"
 )
 
-scalaVersion := "2.9.1"
+scalaVersion := "2.10.0-M7"
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
@@ -23,7 +23,9 @@ scalaVersion := "2.9.1"
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
 crossScalaVersions := Seq(
-  "2.9.2", "2.9.1-1", "2.9.1", "2.9.0-1", "2.9.0", "2.8.2", "2.8.1", "2.8.0"
+  "2.10.0-M7",
+  "2.9.2", "2.9.1-1", "2.9.1", "2.9.0-1", "2.9.0",
+  "2.8.2", "2.8.1", "2.8.0"
 )
 
 seq(lsSettings :_*)
@@ -39,21 +41,22 @@ seq(lsSettings :_*)
 
 libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
     // Select ScalaTest version based on Scala version
-    val scalatestVersionMap = Map("2.8.0"   -> ("scalatest_2.8.0", "1.3.1.RC2"),
-                                  "2.8.1"   -> ("scalatest_2.8.1", "1.7.1"),
-                                  "2.8.2"   -> ("scalatest_2.8.2", "1.7.1"),
-                                  "2.9.0"   -> ("scalatest_2.9.0", "1.7.1"),
-                                  "2.9.0-1" -> ("scalatest_2.9.0-1", "1.7.1"),
-                                  "2.9.1"   -> ("scalatest_2.9.1", "1.7.1"),
-                                  "2.9.1-1" -> ("scalatest_2.9.1", "1.7.1"),
-                                  "2.9.2"   -> ("scalatest_2.9.1", "1.7.1"))
+    val scalatestVersionMap = Map(
+      "2.8.0"     -> ("scalatest_2.8.0", "1.3.1.RC2"),
+      "2.8.1"     -> ("scalatest_2.8.1", "1.7.1"),
+      "2.8.2"     -> ("scalatest_2.8.2", "1.7.1"),
+      "2.9.0"     -> ("scalatest_2.9.0", "1.7.1"),
+      "2.9.0-1"   -> ("scalatest_2.9.0-1", "1.7.1"),
+      "2.9.1"     -> ("scalatest_2.9.1", "1.7.1"),
+      "2.9.1-1"   -> ("scalatest_2.9.1", "1.7.1"),
+      "2.9.2"     -> ("scalatest_2.9.1", "1.7.1"),
+      "2.10.0-M7" -> ("scalatest_2.10.0-M7", "1.9-2.10.0-M7-B1")
+    )
     val (scalatestArtifact, scalatestVersion) = scalatestVersionMap.getOrElse(
-        sv, error("Unsupported Scala version: " + scalaVersion)
+        sv, error("Unsupported Scala version for ScalaTest: " + scalaVersion)
     )
     deps :+ "org.scalatest" % scalatestArtifact % scalatestVersion % "test"
 }
-
-fork in Test := true
 
 // ---------------------------------------------------------------------------
 // Other dependendencies
