@@ -23,7 +23,7 @@ can get download the MarkWrap library jar directly from the Maven
 repository. However, if you're using [Maven][] or [SBT][], you can just have
 those tools do the job for you.
 
-Version 0.5.4 is available for Scala 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0,
+Version 0.5.5 supports Scala 2.10.0-M7, 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0,
 2.8.2, 2.8.1 and 2.8.0.
 
 ## Installing for Maven
@@ -32,16 +32,16 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `org.clapper`
-* Artifact ID: `markwrap_2.9.2`
-* Version: `0.5.4`
+* Artifact ID: `markwrap_VERSION` (`markwrap_2.10`, for example)
+* Version: `0.5.5`
 * Type: `jar`
 
 For example:
 
     <dependency>
       <groupId>org.clapper</groupId>
-      <artifactId>markwrap_2.9.2</artifactId>
-      <version>0.5.4</version>
+      <artifactId>markwrap_2.10</artifactId>
+      <version>0.5.5</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -57,14 +57,20 @@ following line in your project file (i.e., the Scala file in your
 
     val markwrap = "org.clapper" %% "markwrap" % "0.5.4"
 
-#### 0.11.x
+#### 0.11.x/0.12.x
 
-If you're using [SBT][] 0.11.x to compile your code, you can use the
-following line in your `build.sbt` file (for Quick Configuration). If
-you're using an SBT 0.11.x Full Configuration, you're obviously smart
-enough to figure out what to do, on your own.
+If you're using [SBT][] 0.11.x or 0.12.x to compile your code, you can use the
+following line in your `build.sbt` file (for Quick Configuration). If you're
+using an SBT's Full Configuration, you're obviously smart enough to figure
+out what to do, on your own.
 
-    libraryDependencies += "org.clapper" %% "markwrap" % "0.5.4"
+For Scala 2.10.0-M7:
+
+    libraryDependencies += "org.clapper" % "markwrap_2.10" % "0.5.5"
+
+For all other versions:
+
+    libraryDependencies += "org.clapper" %% "markwrap" % "0.5.5"
 
 MarkWrap is also registered with [Doug Tangren][]'s excellent
 [ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install
@@ -334,7 +340,7 @@ request. Along with any patch you send:
 [MarkWrap web site]: http://software.clapper.org/markwrap/
 [bmc@clapper.org]: mailto:bmc@clapper.org
 [Brian M. Clapper]: mailto:bmc@clapper.org
-[changelog]: CHANGELOG.html
+[changelog]: https://github.com/bmc/markwrap/blob/master/CHANGELOG.md
 [SBT]: http://code.google.com/p/simple-build-tool
 [SBT cross-building]: http://code.google.com/p/simple-build-tool/wiki/CrossBuild
 [Apache Ivy]: http://ant.apache.org/ivy/
