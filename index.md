@@ -20,8 +20,9 @@ markup APIs. Currently, it supports:
 MarkWrap is published to the `oss.sonatype.org` repository and automatically
 sync'd with the [Maven Central Repository][].
 
-Version 0.5.5 supports Scala 2.10.0-M7, 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1, 2.9.0,
-2.8.2, 2.8.1 and 2.8.0.
+* Version 1.0 supports Scala 2.10.0-RC1.
+* Version 0.5.5 supports Scala 2.10.0-M7, 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1,
+  2.9.0, 2.8.2, 2.8.1 and 2.8.0.
 
 ## Installing for Maven
 
