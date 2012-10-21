@@ -48,7 +48,7 @@ class PlainTextTest extends FunSuite {
 
     val parser = MarkWrap.parserFor(MarkupType.PlainText)
     for ((input, expected) <- data) {
-      expect(expected, "Plain text transform on " + input) {
+      expectResult(expected, "Plain text transform on " + input) {
         parser.parseToHTML(input)
       }
     }

@@ -54,10 +54,10 @@ class MarkdownTest extends FunSuite {
     )
 
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    expect(MarkupType.Markdown, "Markup type") {parser.markupType}
+    expectResult(MarkupType.Markdown, "Markup type") {parser.markupType}
 
     for((input, expected) <- data) {
-      expect(expected, "MarkdownParser.parseToHTML() on: " + input) {
+      expectResult(expected, "MarkdownParser.parseToHTML() on: " + input) {
         parser.parseToHTML(input)
       }
     }
@@ -85,7 +85,7 @@ class MarkdownTest extends FunSuite {
 
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
     for((input, expected) <- data) {
-      expect(expected, "MarkdownParser.parseToHTML() on: " + input) {
+      expectResult(expected, "MarkdownParser.parseToHTML() on: " + input) {
         parser.parseToHTML(input)
       }
     }
@@ -101,10 +101,10 @@ class MarkdownTest extends FunSuite {
     )
 
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    expect(MarkupType.Markdown, "Markup type") {parser.markupType}
+    expectResult(MarkupType.Markdown, "Markup type") {parser.markupType}
 
     for((input, title, expected) <- data) {
-      expect(true, "MarkdownParser.parseToHTMLDocument() on: " + input) {
+      expectResult(true, "MarkdownParser.parseToHTMLDocument() on: " + input) {
         val result = parser.parseToHTMLDocument(Source.fromString(input),
                                                 title, None)
         result startsWith expected
@@ -121,10 +121,10 @@ class MarkdownTest extends FunSuite {
     )
 
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    expect(MarkupType.Markdown, "Markup type") {parser.markupType}
+    expectResult(MarkupType.Markdown, "Markup type") {parser.markupType}
 
     for((input, expected) <- data) {
-      expect(true, "MarkdownParser.parseToHTMLDocument() on: " + input) {
+      expectResult(true, "MarkdownParser.parseToHTMLDocument() on: " + input) {
         val result = parser.parseToHTMLDocument(Source.fromString(input),
                                                 "", None)
         result contains expected

@@ -1,3 +1,10 @@
+# Change log for MarkWrap library
+
+Version 1.0.0:
+
+* Cross-compiled and published for Scala 2.10.0-RC1.
+* Converted to use ScalaTest 2.0, which changes `expect` to `expectResult`.
+
 Version 0.5.5:
 
 * Added Scala 2.10.0-M7 to the list of cross-built versions.

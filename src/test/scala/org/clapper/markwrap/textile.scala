@@ -62,10 +62,10 @@ class TextileTest extends FunSuite {
     )
 
     val parser = MarkWrap.parserFor(MarkupType.Textile)
-    expect(MarkupType.Textile, "Markup type") {parser.markupType}
+    expectResult(MarkupType.Textile, "Markup type") {parser.markupType}
 
     for((input, expected) <- data) {
-      expect(expected, "MarkdownParser.parseToHTML() on: " + input) {
+      expectResult(expected, "MarkdownParser.parseToHTML() on: " + input) {
         parser.parseToHTML(input)
       }
     }

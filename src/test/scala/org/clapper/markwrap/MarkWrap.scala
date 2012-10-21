@@ -75,19 +75,19 @@ class MarkWrapTest extends FunSuite {
     )
 
     for ((expected, fn) <- fData) {
-      expect(expected, "MarkWrap.parserFor(new File(\"" + fn + "\"))") {
+      expectResult(expected, "MarkWrap.parserFor(new File(\"" + fn + "\"))") {
         MarkWrap.parserFor(new File(fn)).markupType
       }
     }
 
     for ((expected, mimeType) <- mtData) {
-      expect(expected, "MarkWrap.parserFor(\"" + mimeType + "\")") {
+      expectResult(expected, "MarkWrap.parserFor(\"" + mimeType + "\")") {
         MarkWrap.parserFor(mimeType).markupType
       }
     }
 
     for (parserType <- typeData) {
-      expect(parserType, "MarkWrap.parserFor(" + parserType + ")") {
+      expectResult(parserType, "MarkWrap.parserFor(" + parserType + ")") {
         MarkWrap.parserFor(parserType).markupType
       }
     }

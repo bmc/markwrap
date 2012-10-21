@@ -57,7 +57,7 @@ class HTMLTextTest extends FunSuite {
 
     val parser = MarkWrap.parserFor(markupType)
     for ((input, expected) <- data) {
-      expect(expected, markupType.toString + " on " + input) {
+      expectResult(expected, markupType.toString + " on " + input) {
         parser.parseToHTML(input)
       }
     }
