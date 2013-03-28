@@ -323,7 +323,7 @@ request. Along with any patch you send:
 * Please indicate that you license the work to the MarkWrap project
   under a [BSD License][].
 
-[BSD License]: license.html
+[BSD License]: https://github.com/bmc/markwrap/blob/master/LICENSE.md
 [GitHub repository]: http://github.com/bmc/markwrap
 [GitHub]: http://github.com/bmc/
 [downloads area]: http://github.com/bmc/markwrap/downloads
