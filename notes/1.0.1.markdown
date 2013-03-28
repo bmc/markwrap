@@ -1,0 +1,3 @@
+* Bumped the WikiText `textile-core` version to 1.4 and the `pegdown`
+  version to 1.2.1. Thanks to Ricky Elrod (*ricky.gh* at *elrod.me*) for
+  the update.

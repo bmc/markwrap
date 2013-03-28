@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "1.0.0"
+version := "1.0.1"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/markwrap/license.html"))
 
@@ -15,14 +15,14 @@ description := (
   "A unified API for converting various lightweight markup languages to HTML"
 )
 
-scalaVersion := "2.10.0-RC1"
+scalaVersion := "2.10.1"
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
-crossScalaVersions := Seq("2.10.0-RC1")
+crossScalaVersions := Seq("2.10.1")
 
 seq(lsSettings :_*)
 
@@ -38,7 +38,8 @@ seq(lsSettings :_*)
 libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
     // Select ScalaTest version based on Scala version
     val scalatestVersionMap = Map(
-      "2.10.0-RC1" -> ("scalatest_2.10.0-RC1", "2.0.M4-2.10.0-RC1-B1")
+      "2.10.0" -> ("scalatest_2.10", "2.0.M5b"),
+      "2.10.1" -> ("scalatest_2.10", "2.0.M5b")
     )
     val (scalatestArtifact, scalatestVersion) = scalatestVersionMap.getOrElse(
         sv, error("Unsupported Scala version for ScalaTest: " + scalaVersion)
