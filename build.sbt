@@ -55,8 +55,8 @@ libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
 // Other dependendencies
 
 libraryDependencies ++= Seq(
-    "org.fusesource.wikitext" % "textile-core" % "1.3",
-    "org.pegdown" % "pegdown" % "1.0.1"
+    "org.fusesource.wikitext" % "textile-core" % "1.4",
+    "org.pegdown" % "pegdown" % "1.2.1"
 )
 
 // ---------------------------------------------------------------------------
