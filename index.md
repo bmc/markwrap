@@ -20,7 +20,7 @@ markup APIs. Currently, it supports:
 MarkWrap is published to the `oss.sonatype.org` repository and automatically
 sync'd with the [Maven Central Repository][].
 
-* Version 1.0 supports Scala 2.10.0-RC1.
+* Version 1.0 supports Scala 2.10.
 * Version 0.5.5 supports Scala 2.10.0-M7, 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1,
   2.9.0, 2.8.2, 2.8.1 and 2.8.0.
 
@@ -31,7 +31,7 @@ rest for you:
 
 * Group ID: `org.clapper`
 * Artifact ID: `markwrap_VERSION` (`markwrap_2.10`, for example)
-* Version: `0.5.5`
+* Version: `1.0.1`
 * Type: `jar`
 
 For example:
@@ -39,7 +39,7 @@ For example:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>markwrap_2.10</artifactId>
-      <version>0.5.5</version>
+      <version>1.0.1</version>
     </dependency>
 
 For more information on using Maven and Scala, see Josh Suereth's
@@ -53,7 +53,7 @@ If you're using [SBT][] 0.7.x to compile your code, you can place the
 following line in your project file (i.e., the Scala file in your
 `project/build/` directory):
 
-    val markwrap = "org.clapper" %% "markwrap" % "0.5.4"
+    val markwrap = "org.clapper" %% "markwrap" % "0.5.5"
 
 #### 0.11.x/0.12.x
 
@@ -62,9 +62,9 @@ following line in your `build.sbt` file (for Quick Configuration). If you're
 using an SBT's Full Configuration, you're obviously smart enough to figure
 out what to do, on your own.
 
-For Scala 2.10.0-M7:
+For Scala 2.10.x:
 
-    libraryDependencies += "org.clapper" % "markwrap_2.10" % "0.5.5"
+    libraryDependencies += "org.clapper" % "markwrap_2.10" % "1.0.1"
 
 For all other versions:
 
@@ -170,10 +170,10 @@ The resulting plain text is simply wrapped in `<pre>` and `</pre>` tags.
 #### Getting a Markdown parser
 
     import org.clapper.markwrap._
-    
+
     // Using the constant
     val parser1 = MarkWrap.parserFor(MarkupType.Markdown)
-    
+
     // Using the MIME type
     val parser2 = MarkWrap.parserFor("text/markdown")
 
@@ -183,10 +183,10 @@ The resulting plain text is simply wrapped in `<pre>` and `</pre>` tags.
 #### Getting a Textile parser
 
     import org.clapper.markwrap._
-    
+
     // Using the constant
     val parser1 = MarkWrap.parserFor(MarkupType.Textile)
-    
+
     // Using the MIME type
     val parser2 = MarkWrap.parserFor("text/textile")
 
@@ -196,10 +196,10 @@ The resulting plain text is simply wrapped in `<pre>` and `</pre>` tags.
 #### Getting a pass-through HTML "parser"
 
     import org.clapper.markwrap._
-    
+
     // Using the constant
     val parser1 = MarkWrap.parserFor(MarkupType.XHTML)
-    
+
     // Using the MIME type
     val parser2 = MarkWrap.parserFor("text/xhtml")
 
@@ -209,10 +209,10 @@ The resulting plain text is simply wrapped in `<pre>` and `</pre>` tags.
 #### Getting a plain text "parser"
 
     import org.clapper.markwrap._
-    
+
     // Using the constant
     val parser1 = MarkWrap.parserFor(MarkupType.PlainText)
-    
+
     // Using the MIME type
     val parser2 = MarkWrap.parserFor("text/plain")
 
@@ -259,25 +259,25 @@ From a `java.io.File`:
 
     import org.clapper.markwrap._
     import java.io.File
-    
+
     val file = new File("/path/to/markup.md")
     val parser = MarkWrap.parserFor(file)
     val html = parser.toHTML(file)
-    
+
 From a string:
 
     import org.clapper.markwrap._
 
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
     val html = parser.toHTML("""This is some *Markdown* text""")
-    
+
 ### Producing a complete HTML document
 
 The `parseToHTMLDocument()` method produces a complete HTML document,
 with `<html>`, `<head>`, and `<body>` sections, as well as an optional
 cascading style sheet. The method's signature looks like this:
 
-    def parseToHTMLDocument(markupSource: Source, 
+    def parseToHTMLDocument(markupSource: Source,
                             title: String,
                             cssSource: Option[Source] = None,
                             encoding: String  = "UTF-8"): String =
