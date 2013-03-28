@@ -1,5 +1,14 @@
 # Change log for MarkWrap library
 
+Version 1.0.1
+
+* Bumped the WikiText `textile-core` version to 1.4 and the `pegdown`
+  version to 1.2.1. Thanks to Ricky Elrod (*ricky.gh* at *elrod.me*) for
+  the update.
+* Compiles against Scala 2.10.1 now (which should be bytecode-compatible with
+  prior Scala 2.10 releases).
+* Bumped ScalaTest version to 2.0.M5b.
+
 Version 1.0.0:
 
 * Cross-compiled and published for Scala 2.10.0-RC1.
@@ -109,5 +118,5 @@ Version 0.1:
 
 * Extracted from the [Grizzled Scala][] library and repackaged, to reduce
   transitive dependencies in [Grizzled Scala][].
-  
+
 [Grizzled Scala]: http://software.clapper.org/grizzled-scala/
