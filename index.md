@@ -240,7 +240,7 @@ Example 1:
 
     val file = new File("/path/to/markup.md")
     val parser = MarkWrap.parserFor(file)
-    val html = parser.toHTML(Source.fromFile(file))
+    val html = parser.parseToHTML(Source.fromFile(file))
 
 Example 2:
 
@@ -249,7 +249,7 @@ Example 2:
 
     val markup = """This is some *Markdown* text"""
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    val html = parser.toHTML(Source.fromString(markup))
+    val html = parser.parseToHTML(Source.fromString(markup))
 
 #### Parsing from a file or a string
 
@@ -262,14 +262,14 @@ From a `java.io.File`:
 
     val file = new File("/path/to/markup.md")
     val parser = MarkWrap.parserFor(file)
-    val html = parser.toHTML(file)
+    val html = parser.parseToHTML(file)
 
 From a string:
 
     import org.clapper.markwrap._
 
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    val html = parser.toHTML("""This is some *Markdown* text""")
+    val html = parser.parseToHTML("""This is some *Markdown* text""")
 
 ### Producing a complete HTML document
 
