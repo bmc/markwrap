@@ -8,3 +8,5 @@ project/plugins/src_managed
 project/plugins/target
 target
 *.sublime-*
+atlassian-ide-plugin.xml
+.idea*
