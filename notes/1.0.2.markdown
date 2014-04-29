@@ -1,0 +1,2 @@
+* Built for Scala 2.10 and 2.11.
+* Updated to latest version of ScalaTest.

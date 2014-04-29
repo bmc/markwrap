@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "1.0.1"
+version := "1.0.2"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/markwrap/license.html"))
 
@@ -15,16 +15,16 @@ description := (
   "A unified API for converting various lightweight markup languages to HTML"
 )
 
-scalaVersion := "2.10.1"
+crossScalaVersions := Seq("2.10.4", "2.11.0")
+
+scalaVersion := crossScalaVersions.value.head
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
 
-scalacOptions ++= Seq("-deprecation", "-unchecked")
+scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.1")
-
-seq(lsSettings :_*)
+lsSettings 
 
 (LsKeys.tags in LsKeys.lsync) := Seq(
   "markdown", "textile", "markup", "html", "library", "crap"
@@ -32,44 +32,31 @@ seq(lsSettings :_*)
 
 (description in LsKeys.lsync) <<= description(d => d)
 
+bintraySettings
+
+bintray.Keys.packageLabels in bintray.Keys.bintray := (
+  LsKeys.tags in LsKeys.lsync
+).value
+
 // ---------------------------------------------------------------------------
 // ScalaTest dependendency
 
-libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
-    // Select ScalaTest version based on Scala version
-    val scalatestVersionMap = Map(
-      "2.10.0" -> ("scalatest_2.10", "2.0.M5b"),
-      "2.10.1" -> ("scalatest_2.10", "2.0.M5b")
-    )
-    val (scalatestArtifact, scalatestVersion) = scalatestVersionMap.getOrElse(
-        sv, error("Unsupported Scala version for ScalaTest: " + scalaVersion)
-    )
-    deps :+ "org.scalatest" % scalatestArtifact % scalatestVersion % "test"
-}
-
-libraryDependencies <<= (scalaVersion, libraryDependencies) { (sv, deps) =>
-  // ScalaTest still uses the (deprecated) scala.actors API.
-  deps :+ "org.scala-lang" % "scala-actors" % sv % "test"
-}
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "2.1.3" % "test"
+)
 
 // ---------------------------------------------------------------------------
 // Other dependendencies
 
 libraryDependencies ++= Seq(
     "org.fusesource.wikitext" % "textile-core" % "1.4",
-    "org.pegdown" % "pegdown" % "1.2.1"
+    "org.pegdown" % "pegdown" % "1.4.2"
 )
 
 // ---------------------------------------------------------------------------
 // Publishing criteria
 
-publishTo <<= version { v: String =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
+// Don't set publishTo. The Bintray plugin does that automatically.
 
 publishMavenStyle := true
 
@@ -86,7 +73,7 @@ pomExtra := (
     <developer>
       <id>bmc</id>
       <name>Brian Clapper</name>
-      <url>http://www.clapper.org/bmc</url>
+      <url>https://github.com/bmc</url>
     </developer>
   </developers>
 )

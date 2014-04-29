@@ -1,9 +1,14 @@
 # Change log for MarkWrap library
 
+Version 1.0.2
+
+* Built for Scala 2.10 and 2.11.
+* Updated to latest version of ScalaTest.
+
 Version 1.0.1
 
 * Bumped the WikiText `textile-core` version to 1.4 and the `pegdown`
-  version to 1.2.1. Thanks to Ricky Elrod (*ricky.gh* at *elrod.me*) for
+  version to 1.2.1. Thanks to Ricky Elrod, _ricky.gh_ at _elrod.me_, for
   the update.
 * Compiles against Scala 2.10.1 now (which should be bytecode-compatible with
   prior Scala 2.10 releases).
