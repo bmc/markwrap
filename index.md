@@ -17,9 +17,13 @@ markup APIs. Currently, it supports:
 
 # Installation
 
-MarkWrap is published to the `oss.sonatype.org` repository and automatically
-sync'd with the [Maven Central Repository][].
+MarkWrap is published to the
+[Bintray Maven repository](https://bintray.com/bmc/maven), which is
+automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
+repository. (From JCenter, it's eventually pushed to the
+automatically sync'd with the [Maven Central Repository][].
 
+* Version 1.0.2 supports Scala 2.11 and 2.10.
 * Version 1.0 supports Scala 2.10.
 * Version 0.5.5 supports Scala 2.10.0-M7, 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1,
   2.9.0, 2.8.2, 2.8.1 and 2.8.0.
@@ -30,8 +34,8 @@ If you're using [Maven][], just specify the artifact, and Maven will do the
 rest for you:
 
 * Group ID: `org.clapper`
-* Artifact ID: `markwrap_VERSION` (`markwrap_2.10`, for example)
-* Version: `1.0.1`
+* Artifact ID: `markwrap_SCALA_VERSION` (`markwrap_2.11`, for example)
+* Version: `1.0.2`
 * Type: `jar`
 
 For example:
@@ -39,42 +43,61 @@ For example:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>markwrap_2.10</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>
+
+If you cannot resolve the artifact, then add the JCenter repository:
+
+    <repositories>
+      <repository>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+      </repository>
+      ...
+    </repositories>
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
 
 ## Using with SBT
 
-#### 0.7.x
-
-If you're using [SBT][] 0.7.x to compile your code, you can place the
-following line in your project file (i.e., the Scala file in your
-`project/build/` directory):
-
-    val markwrap = "org.clapper" %% "markwrap" % "0.5.5"
+### Using with SBT
 
 #### 0.11.x/0.12.x
 
 If you're using [SBT][] 0.11.x or 0.12.x to compile your code, you can use the
-following line in your `build.sbt` file (for Quick Configuration). If you're
-using an SBT's Full Configuration, you're obviously smart enough to figure
-out what to do, on your own.
+following line in your build.sbt file (for Quick Configuration).
 
-For Scala 2.10.x:
+    repositories += "JCenter" at "http://jcenter.bintray.com/"
 
-    libraryDependencies += "org.clapper" % "markwrap_2.10" % "1.0.1"
+    libraryDependencies += "org.clapper" %% "markwrap" % "1.0.2"
 
-For all other versions:
+You only need the `repositories` line if the artifact cannot be resolved (e.g.,
+has not, for some reason, been pushed to Maven Central yet).
 
-    libraryDependencies += "org.clapper" %% "markwrap" % "0.5.5"
+#### 0.13.x
 
-MarkWrap is also registered with [Doug Tangren][]'s excellent
-[ls.implicit.ly][] catalog. If you use the `ls` SBT plugin, you can install
-MarkWrap with
+With SBT 0.13.x, you can just use [Doug Tangren's](https://github.com/softprops/)
+`bintray-sbt` plugin. In your `project/plugins.sbt` file, add:
 
-    sbt> ls-install markwrap
+    resolvers += Resolver.url(
+      "bintray-sbt-plugin-releases",
+      url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
+        Resolver.ivyStylePatterns)
+
+    addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.2")
+
+Then, in your `build.sbt` file, add:
+
+    bintrayResolverSettings
+
+That automatically adds the appropriate Bintray repositories. Finally, add:
+
+    libraryDependencies += "org.clapper" %% "markwrap" % "1.0.2"
 
 # Building from Source
 
@@ -87,7 +110,7 @@ clone the repository, run this command:
 
 ## Build Requirements
 
-Building the MarkWrap library requires [SBT][] 0.10.1. Install
+Building the MarkWrap library requires [SBT][] 0.13.x. Install
 SBT, as described at the SBT web site.
 
 ## Building MarkWrap
