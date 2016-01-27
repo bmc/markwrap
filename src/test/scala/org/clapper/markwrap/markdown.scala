@@ -34,14 +34,14 @@
   ---------------------------------------------------------------------------
 */
 
-import org.scalatest.FunSuite
+import org.scalatest.{Matchers, FlatSpec}
 import org.clapper.markwrap._
 import scala.io.Source;
 /**
   * Tests the grizzled.parsing.markup Markdown functions.
   */
-class MarkdownTest extends FunSuite {
-  test("MarkdownParser.parseToHTML") {
+class MarkdownTest extends FlatSpec with Matchers {
+  "MarkdownParser.parseToHTML" should "produce valid HTML" in {
 
     val data = List(
       ("*Test*",             "<p><em>Test</em></p>"),
@@ -50,20 +50,18 @@ class MarkdownTest extends FunSuite {
       ("__Test__",           "<p><strong>Test</strong></p>"),
       ("___Test___",         "<p><strong><em>Test</em></strong></p>"),
       ("***Test***",         "<p><strong><em>Test</em></strong></p>"),
-      ("abc\n===\n\ntest",   "<h1>abc</h1><p>test</p>")
+      ("abc\n===\n\ntest",   "<h1>abc</h1>\n<p>test</p>")
     )
 
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
     assertResult(MarkupType.Markdown, "Markup type") {parser.markupType}
 
     for((input, expected) <- data) {
-      assertResult(expected, "MarkdownParser.parseToHTML() on: " + input) {
-        parser.parseToHTML(input)
-      }
+      parser.parseToHTML(input) shouldBe expected
     }
   }
 
-  test("No hard line wraps") {
+  it should "not do anything special with hard line wraps" in {
     val data = List(
       ("test\n*test*",     "<p>test <em>test</em></p>"),
 
@@ -85,13 +83,27 @@ class MarkdownTest extends FunSuite {
 
     val parser = MarkWrap.parserFor(MarkupType.Markdown)
     for((input, expected) <- data) {
-      assertResult(expected, "MarkdownParser.parseToHTML() on: " + input) {
-        parser.parseToHTML(input)
-      }
+      parser.parseToHTML(input) shouldBe expected
     }
   }
 
-  test("MarkdownParser.parseToHTMLDocument and title substitution") {
+  it should "not expand quotes into smart quote entities" in {
+    val parser = MarkWrap.parserFor(MarkupType.Markdown)
+
+    parser.parseToHTML("""This has "quotes" in it.""") shouldBe (
+      """<p>This has "quotes" in it.</p>"""
+    )
+  }
+
+  it should "not prettify em- and en-dashes" in {
+    val parser = MarkWrap.parserFor(MarkupType.Markdown)
+
+    parser.parseToHTML("An em-dash---and an en-dash--are here.") shouldBe (
+      "<p>An em-dash---and an en-dash--are here.</p>"
+    )
+  }
+
+  "MarkdownParser.parseToHTMLDocument" should "do title substitution" in {
 
     val data = List(
       ("test document", "test title",
@@ -104,15 +116,13 @@ class MarkdownTest extends FunSuite {
     assertResult(MarkupType.Markdown, "Markup type") {parser.markupType}
 
     for((input, title, expected) <- data) {
-      assertResult(true, "MarkdownParser.parseToHTMLDocument() on: " + input) {
-        val result = parser.parseToHTMLDocument(Source.fromString(input),
-                                                title, None)
-        result startsWith expected
-      }
+      val result = parser.parseToHTMLDocument(Source.fromString(input),
+                                              title, None)
+      result.startsWith(expected) shouldBe true
     }
   }
 
-  test("MarkdownParser.parseToHTMLDocument and HTML entities") {
+  it should "handle HTML entities" in {
 
     val data = List(
       // markdown            result contains
@@ -124,11 +134,9 @@ class MarkdownTest extends FunSuite {
     assertResult(MarkupType.Markdown, "Markup type") {parser.markupType}
 
     for((input, expected) <- data) {
-      assertResult(true, "MarkdownParser.parseToHTMLDocument() on: " + input) {
-        val result = parser.parseToHTMLDocument(Source.fromString(input),
-                                                "", None)
-        result contains expected
-      }
+      val result = parser.parseToHTMLDocument(Source.fromString(input),
+                                              "", None)
+      result.contains(expected) shouldBe true
     }
   }
 }

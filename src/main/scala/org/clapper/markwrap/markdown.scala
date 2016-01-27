@@ -44,11 +44,18 @@ import org.pegdown.{PegDownProcessor, Extensions}
 /**
   * The `MarkdownParser` class parses the Markdown markup language,
   * producing HTML. The current implementation uses the Java-based Pegdown
-  * parser.
+  * parser with the following extensions enabled:
+  *
+  * - Definition lists <https://michelf.ca/projects/php-markdown/extra/#def-list>
+  * - Fenced code blocks <https://michelf.ca/projects/php-markdown/extra/#fenced-code-blocks>
+  * - Tables <http://fletcher.github.io/MultiMarkdown-5/tables.html>
   */
 private[markwrap] class MarkdownParser extends MarkWrapParser {
   val markupType = MarkupType.Markdown
-  val pegDown = new PegDownProcessor(Extensions.ALL - Extensions.HARDWRAPS)
+  val pegDown = new PegDownProcessor(Extensions.NONE |
+                                     Extensions.DEFINITIONS |
+                                     Extensions.TABLES |
+                                     Extensions.FENCED_CODE_BLOCKS)
 
   /** Parse a Markdown document, producing HTML. The generated HTML markup
     * does not contain HTML or BODY tags, so it is suitable for embedding in

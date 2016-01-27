@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "1.0.2"
+version := "1.1.0"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/markwrap/license.html"))
 
@@ -22,27 +22,17 @@ scalaVersion := crossScalaVersions.value.head
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins
 
+autoCompilerPlugins := true
+
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-lsSettings 
-
-(LsKeys.tags in LsKeys.lsync) := Seq(
-  "markdown", "textile", "markup", "html", "library", "crap"
-)
-
-(description in LsKeys.lsync) <<= description(d => d)
-
-bintraySettings
-
-bintray.Keys.packageLabels in bintray.Keys.bintray := (
-  LsKeys.tags in LsKeys.lsync
-).value
+bintrayPackageLabels := Seq("library", "markdown", "textile", "scala")
 
 // ---------------------------------------------------------------------------
 // ScalaTest dependendency
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.1.3" % "test"
+  "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 )
 
 // ---------------------------------------------------------------------------
@@ -50,7 +40,7 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
     "org.fusesource.wikitext" % "textile-core" % "1.4",
-    "org.pegdown" % "pegdown" % "1.4.2"
+    "org.pegdown" % "pegdown" % "1.6.0"
 )
 
 // ---------------------------------------------------------------------------

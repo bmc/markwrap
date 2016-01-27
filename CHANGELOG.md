@@ -1,5 +1,12 @@
 # Change log for MarkWrap library
 
+Version 1.1.0
+
+* Disabled conversion of "---", "--", and quotes to HTML entities (which mean
+  the resulting HTML can be more reliably parsed by `scala.xml`).
+* Updated ScalaTest and Pegdown versions.
+* Removed `ls` from build.
+
 Version 1.0.2
 
 * Built for Scala 2.10 and 2.11.
