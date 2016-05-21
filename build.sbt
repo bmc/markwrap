@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "1.1.0"
+version := "1.1.1"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/markwrap/license.html"))
 
@@ -15,9 +15,10 @@ description := (
   "A unified API for converting various lightweight markup languages to HTML"
 )
 
-crossScalaVersions := Seq("2.10.4", "2.11.0")
+scalaVersion := "2.11.8"
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-M4")
 
-scalaVersion := crossScalaVersions.value.head
+ivyScala := ivyScala.value.map { _.copy(overrideScalaVersion = true) }
 
 // ---------------------------------------------------------------------------
 // Additional compiler options and plugins

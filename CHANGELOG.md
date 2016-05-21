@@ -1,5 +1,11 @@
 # Change log for MarkWrap library
 
+Version 1.1.1
+
+* Added Lightbend Activator for auto-downloading build.
+* Integrated with Travis CI.
+* Now builds with Scala 2.12, as well as 2.10 and 2.11.
+
 Version 1.1.0
 
 * Disabled conversion of "---", "--", and quotes to HTML entities (which mean
