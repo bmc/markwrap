@@ -1,6 +1,8 @@
 MarkWrap: Unified Scala wrapper API for various lightweight markup APIs
 =======================================================================
 
+[![Build Status](https://travis-ci.org/bmc/markwrap.svg?branch=master)](https://travis-ci.org/bmc/markwrap)
+
 ## Introduction
 
 The MarkWrap library (pronounced "mark wrap" or "more crap", depending on
