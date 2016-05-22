@@ -24,7 +24,7 @@ See the [MarkWrap web site][] for more details.
 [FuseSource WikiText fork]: https://github.com/fusesource/wikitext
 [MarkWrap web site]: http://software.clapper.org/markwrap/
 
-MarkWrap is copyright &copy; 2010-2013 [Brian M. Clapper][] and is released
+MarkWrap is copyright &copy; 2010-2016 [Brian M. Clapper][] and is released
 under a new BSD license.
 
 [Brian M. Clapper]: mailto:bmc@clapper.org
