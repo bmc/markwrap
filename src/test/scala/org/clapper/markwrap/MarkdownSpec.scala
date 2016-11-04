@@ -34,13 +34,12 @@
   ---------------------------------------------------------------------------
 */
 
-import org.scalatest.{Matchers, FlatSpec}
 import org.clapper.markwrap._
-import scala.io.Source;
+import scala.io.Source
 /**
-  * Tests the grizzled.parsing.markup Markdown functions.
+  * Tests the Markdown functions.
   */
-class MarkdownTest extends FlatSpec with Matchers {
+class MarkdownSpec extends BaseSpec {
   "MarkdownParser.parseToHTML" should "produce valid HTML" in {
 
     val data = List(

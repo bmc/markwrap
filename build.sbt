@@ -5,18 +5,16 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "1.1.1"
+version := "1.1.2"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/markwrap/license.html"))
 
 homepage := Some(url("http://software.clapper.org/markwrap/"))
 
-description := (
-  "A unified API for converting various lightweight markup languages to HTML"
-)
+description := "A unified API for converting various lightweight markup languages to HTML"
 
 scalaVersion := "2.11.8"
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-M4")
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0")
 
 ivyScala := ivyScala.value.map { _.copy(overrideScalaVersion = true) }
 
@@ -33,7 +31,7 @@ bintrayPackageLabels := Seq("library", "markdown", "textile", "scala")
 // ScalaTest dependendency
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
 
 // ---------------------------------------------------------------------------

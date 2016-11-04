@@ -1,5 +1,10 @@
 # Change log for MarkWrap library
 
+Version 1.1.2
+
+* Updated to cross-build against Scala 2.12.0-final.
+* Updated to ScalaTest 3.0.0, and converted all tests to `FlatSpec` style.
+
 Version 1.1.1
 
 * Added Lightbend Activator for auto-downloading build.
