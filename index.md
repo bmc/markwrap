@@ -23,6 +23,7 @@ automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
 repository. (From JCenter, it's eventually pushed to the
 automatically sync'd with the [Maven Central Repository][].
 
+* Version 1.1.2 supports Scala 2.12, Scala 2.11 and 2.10.
 * Version 1.0.2 supports Scala 2.11 and 2.10.
 * Version 1.0 supports Scala 2.10.
 * Version 0.5.5 supports Scala 2.10.0-M7, 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1,
@@ -35,7 +36,7 @@ rest for you:
 
 * Group ID: `org.clapper`
 * Artifact ID: `markwrap_SCALA_VERSION` (`markwrap_2.11`, for example)
-* Version: `1.0.2`
+* Version: `1.1.2`
 * Type: `jar`
 
 For example:
@@ -43,7 +44,7 @@ For example:
     <dependency>
       <groupId>org.clapper</groupId>
       <artifactId>markwrap_2.10</artifactId>
-      <version>1.0.2</version>
+      <version>1.1.2</version>
     </dependency>
 
 If you cannot resolve the artifact, then add the JCenter repository:
@@ -67,37 +68,9 @@ For more information on using Maven and Scala, see Josh Suereth's
 
 ### Using with SBT
 
-#### 0.11.x/0.12.x
+Just add the following line to your `build.sbt`:
 
-If you're using [SBT][] 0.11.x or 0.12.x to compile your code, you can use the
-following line in your build.sbt file (for Quick Configuration).
-
-    repositories += "JCenter" at "http://jcenter.bintray.com/"
-
-    libraryDependencies += "org.clapper" %% "markwrap" % "1.0.2"
-
-You only need the `repositories` line if the artifact cannot be resolved (e.g.,
-has not, for some reason, been pushed to Maven Central yet).
-
-#### 0.13.x
-
-With SBT 0.13.x, you can just use [Doug Tangren's](https://github.com/softprops/)
-`bintray-sbt` plugin. In your `project/plugins.sbt` file, add:
-
-    resolvers += Resolver.url(
-      "bintray-sbt-plugin-releases",
-      url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(
-        Resolver.ivyStylePatterns)
-
-    addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.2")
-
-Then, in your `build.sbt` file, add:
-
-    bintrayResolverSettings
-
-That automatically adds the appropriate Bintray repositories. Finally, add:
-
-    libraryDependencies += "org.clapper" %% "markwrap" % "1.0.2"
+    libraryDependencies += "org.clapper" %% "markwrap" % "1.1.2"
 
 # Building from Source
 
@@ -119,7 +92,11 @@ Assuming you have an `sbt` shell script (or .BAT file, for Windows), run:
 
     sbt compile test package
 
-The resulting jar file will be in the top-level `target` directory.
+The resulting jar file will be in the top-level `target` directory. If you're
+on a Unix-like system (including Mac OS), you can just use the `activator`
+script that's bundled with the code:
+
+    bin/activator compile test package
 
 # Using MarkWrap
 
