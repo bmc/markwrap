@@ -9,7 +9,7 @@ The MarkWrap library (pronounced "mark wrap" or "more crap", depending on
 your preference) is a Scala library that provides a unified API for using
 various underlying lightweight markup APIs. Currently, it supports:
 
-* [Markdown][], via the [PegDown][] parser.
+* [Markdown][], via the [flexmark-java][] parser.
 * [Textile][], via the [FuseSource WikiText fork][] of the Eclipse
   [Mylyn][] *wikitext* parser API.
 * An internal handler that wraps plain text in `<pre>` and `</pre>` tags.
@@ -17,7 +17,7 @@ various underlying lightweight markup APIs. Currently, it supports:
 
 See the [MarkWrap web site][] for more details.
 
-[PegDown]: http://pegdown.org
+[flexmark-java]: https://github.com/vsch/flexmark-java
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Textile]: http://textile.thresholdstate.com/
 [Mylyn]: http://www.eclipse.org/mylyn/
