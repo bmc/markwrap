@@ -9,7 +9,8 @@ The MarkWrap library (pronounced "mark wrap" or "more crap", depending on
 your preference) is a unified Scala API for various underlying lightweight
 markup APIs. Currently, it supports:
 
-* [Markdown][], via the [PegDown][] parser.
+* [Markdown][], via the [flexmark-java][] parser. (Prior to version 1.2,
+  MarkWrap used Pegdown.)
 * [Textile][], via the [FuseSource WikiText fork][] of then Eclipse
   [Mylyn][] *wikitext* parser API.
 * An internal handler that wraps plain text in `<pre>` and `</pre>` tags.
@@ -23,7 +24,7 @@ automatically linked to Bintray's [JCenter](https://bintray.com/bintray/jcenter)
 repository. (From JCenter, it's eventually pushed to the
 automatically sync'd with the [Maven Central Repository][].
 
-* Version 1.1.2 supports Scala 2.12, Scala 2.11 and 2.10.
+* Versions 1.2.0 and 1.1.2 support Scala 2.12, Scala 2.11 and 2.10.
 * Version 1.0.2 supports Scala 2.11 and 2.10.
 * Version 1.0 supports Scala 2.10.
 * Version 0.5.5 supports Scala 2.10.0-M7, 2.9.2, 2.9.1-1, 2.9.1, 2.9.0-1,
@@ -36,30 +37,34 @@ rest for you:
 
 * Group ID: `org.clapper`
 * Artifact ID: `markwrap_SCALA_VERSION` (`markwrap_2.11`, for example)
-* Version: `1.1.2`
+* Version: `1.2.0`
 * Type: `jar`
 
 For example:
 
-    <dependency>
-      <groupId>org.clapper</groupId>
-      <artifactId>markwrap_2.10</artifactId>
-      <version>1.1.2</version>
-    </dependency>
+```xml
+<dependency>
+  <groupId>org.clapper</groupId>
+  <artifactId>markwrap_2.10</artifactId>
+  <version>1.2.0</version>
+</dependency>
+```
 
 If you cannot resolve the artifact, then add the JCenter repository:
 
-    <repositories>
-      <repository>
-        <snapshots>
-          <enabled>false</enabled>
-        </snapshots>
-        <id>central</id>
-        <name>bintray</name>
-        <url>http://jcenter.bintray.com</url>
-      </repository>
-      ...
-    </repositories>
+```xml
+<repositories>
+  <repository>
+    <snapshots>
+      <enabled>false</enabled>
+    </snapshots>
+    <id>central</id>
+    <name>bintray</name>
+    <url>http://jcenter.bintray.com</url>
+  </repository>
+  ...
+</repositories>
+```
 
 For more information on using Maven and Scala, see Josh Suereth's
 [Scala Maven Guide][].
@@ -70,7 +75,9 @@ For more information on using Maven and Scala, see Josh Suereth's
 
 Just add the following line to your `build.sbt`:
 
-    libraryDependencies += "org.clapper" %% "markwrap" % "1.1.2"
+```scala
+libraryDependencies += "org.clapper" %% "markwrap" % "1.2.0"
+```
 
 # Building from Source
 
@@ -79,7 +86,9 @@ Just add the following line to your `build.sbt`:
 The source code for the MarkWrap library is maintained on [GitHub][]. To
 clone the repository, run this command:
 
-    git clone git://github.com/bmc/markwrap.git
+```
+git clone git://github.com/bmc/markwrap.git
+```
 
 ## Build Requirements
 
@@ -90,13 +99,11 @@ SBT, as described at the SBT web site.
 
 Assuming you have an `sbt` shell script (or .BAT file, for Windows), run:
 
-    sbt compile test package
+```
+sbt compile test package
+```
 
-The resulting jar file will be in the top-level `target` directory. If you're
-on a Unix-like system (including Mac OS), you can just use the `activator`
-script that's bundled with the code:
-
-    bin/activator compile test package
+The resulting jar file will be in the top-level `target` directory.
 
 # Using MarkWrap
 
@@ -109,7 +116,7 @@ languages. There are two steps to use the API:
 ## Getting the Desired Parser
 
 To obtain a parser, use the `org.clapper.markwrap.MarkWrap` object's
-`parserFor()` method, passing it either:
+`converterFor()` method, passing it either:
 
 * a MIME type
 * a markup language constant
@@ -117,23 +124,47 @@ To obtain a parser, use the `org.clapper.markwrap.MarkWrap` object's
 
 ### Parsing Markdown
 
-To get a [Markdown][] parser, call `MarkWrap.parserFor()` with:
+To get a [Markdown][] parser, call `MarkWrap.converterFor()` with:
 
 * the `MarkupType.Markdown` constant
 * the MIME type string "text/markdown"
 * A `java.io.File` object specifying a file with either a `.md` or `.markdown`
   extension.
 
-[Markdown][] is parsed with [Pegdown][], instantiated with all of Pegdown's
-extension options *except* `HARDWRAPS`. This means that hard line wraps in
-your Markdown source are *not* passed through as `<br/>` elements in the
-HTML. To force a `<br/>` (a hard line wrap), use two or more spaces at the
-end of a Markdown line, which is how hard line wraps are handled in
-standard Markdown.
+[Markdown][] is parsed with [flexmark-java][], using the
+[CommonMark](http://commonmark.org/) dialect, with some these extensions:
+
+**Tables**
+
+Supports [GitHub-flavored Markdown](https://help.github.com/articles/organizing-information-with-tables/)
+table syntax.
+
+**Strikethrough**
+
+`~~text~~` renders "text" as strikethrough (`<p><del>text</del></p>`).
+**Subscript**
+ 
+`~text~` renders "text" as subscript(`<p><sub>text</sub></p>`)
+
+**Definition lists**
+
+```
+Orange
+:   The fruit of an evergreen tree of the genus Citrus.
+```
+
+renders as:
+
+```html
+<dl>
+<dt>Orange</dt>
+<dd>The fruit of an evergreen tree of the genus Citrus.</dd>
+</dl>
+```
 
 ### Parsing Textile
 
-To get a [Textile][] parser, call `MarkWrap.parserFor()` with:
+To get a [Textile][] parser, call `MarkWrap.converterFor()` with:
 
 * the `MarkupType.Textile` constant
 * the MIME type string "text/textile"
@@ -143,7 +174,7 @@ To get a [Textile][] parser, call `MarkWrap.parserFor()` with:
 
 ### Parsing raw HTML
 
-To get a passthrough parser for HTML or XHTML, call `MarkWrap.parserFor()`
+To get a passthrough parser for HTML or XHTML, call `MarkWrap.converterFor()`
 with:
 
 * the `MarkupType.HTML` or `Markup.XHTML` constants
@@ -156,7 +187,7 @@ unmodified.
 
 ### Handling plain text
 
-To get a plaintext-to-HTML parser, call `MarkWrap.parserFor()` with:
+To get a plaintext-to-HTML parser, call `MarkWrap.converterFor()` with:
 
 * the `MarkupType.PlainText` constant
 * the MIME type string "text/plain"
@@ -169,55 +200,63 @@ The resulting plain text is simply wrapped in `<pre>` and `</pre>` tags.
 
 #### Getting a Markdown parser
 
-    import org.clapper.markwrap._
+```scala
+import org.clapper.markwrap._
 
-    // Using the constant
-    val parser1 = MarkWrap.parserFor(MarkupType.Markdown)
+// Using the constant
+val parser1 = MarkWrap.converterFor(MarkupType.Markdown)
 
-    // Using the MIME type
-    val parser2 = MarkWrap.parserFor("text/markdown")
+// Using the MIME type
+val parser2 = MarkWrap.converterFor("text/markdown")
 
-    // Using a File object
-    val parser3 = MarkWrap.parserFor(new java.io.File("foo.md"))
+// Using a File object
+val parser3 = MarkWrap.converterFor(new java.io.File("foo.md"))
+```
 
 #### Getting a Textile parser
 
-    import org.clapper.markwrap._
+```scala
+import org.clapper.markwrap._
 
-    // Using the constant
-    val parser1 = MarkWrap.parserFor(MarkupType.Textile)
+// Using the constant
+val parser1 = MarkWrap.converterFor(MarkupType.Textile)
 
-    // Using the MIME type
-    val parser2 = MarkWrap.parserFor("text/textile")
+// Using the MIME type
+val parser2 = MarkWrap.converterFor("text/textile")
 
-    // Using a File object
-    val parser3 = MarkWrap.parserFor(new java.io.File("foo.textile"))
+// Using a File object
+val parser3 = MarkWrap.converterFor(new java.io.File("foo.textile"))
+```
 
 #### Getting a pass-through HTML "parser"
 
-    import org.clapper.markwrap._
+```scala
+import org.clapper.markwrap._
 
-    // Using the constant
-    val parser1 = MarkWrap.parserFor(MarkupType.XHTML)
+// Using the constant
+val parser1 = MarkWrap.converterFor(MarkupType.XHTML)
 
-    // Using the MIME type
-    val parser2 = MarkWrap.parserFor("text/xhtml")
+// Using the MIME type
+val parser2 = MarkWrap.converterFor("text/xhtml")
 
-    // Using a File object
-    val parser3 = MarkWrap.parserFor(new java.io.File("foo.html"))
+// Using a File object
+val parser3 = MarkWrap.converterFor(new java.io.File("foo.html"))
+```
 
 #### Getting a plain text "parser"
 
-    import org.clapper.markwrap._
+```scala
+import org.clapper.markwrap._
 
-    // Using the constant
-    val parser1 = MarkWrap.parserFor(MarkupType.PlainText)
+// Using the constant
+val parser1 = MarkWrap.converterFor(MarkupType.PlainText)
 
-    // Using the MIME type
-    val parser2 = MarkWrap.parserFor("text/plain")
+// Using the MIME type
+val parser2 = MarkWrap.converterFor("text/plain")
 
-    // Using a File object
-    val parser3 = MarkWrap.parserFor(new java.io.File("foo.txt"))
+// Using a File object
+val parser3 = MarkWrap.converterFor(new java.io.File("foo.txt"))
+```
 
 ## Parsing the Markup
 
@@ -234,22 +273,26 @@ complete document; see below for details.)
 
 Example 1:
 
-    import org.clapper.markwrap._
-    import scala.io.Source
-    import java.io.File
+```scala
+import org.clapper.markwrap._
+import scala.io.Source
+import java.io.File
 
-    val file = new File("/path/to/markup.md")
-    val parser = MarkWrap.parserFor(file)
-    val html = parser.parseToHTML(Source.fromFile(file))
+val file = new File("/path/to/markup.md")
+val parser = MarkWrap.converterFor(file)
+val html = parser.parseToHTML(Source.fromFile(file))
+```
 
 Example 2:
 
-    import org.clapper.markwrap._
-    import scala.io.Source
+```scala
+import org.clapper.markwrap._
+import scala.io.Source
 
-    val markup = """This is some *Markdown* text"""
-    val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    val html = parser.parseToHTML(Source.fromString(markup))
+val markup = """This is some *Markdown* text"""
+val parser = MarkWrap.converterFor(MarkupType.Markdown)
+val html = parser.parseToHTML(Source.fromString(markup))
+```
 
 #### Parsing from a file or a string
 
@@ -257,19 +300,23 @@ If you're parsing from a file or a string, there are some shortcut methods:
 
 From a `java.io.File`:
 
-    import org.clapper.markwrap._
-    import java.io.File
+```scala
+import org.clapper.markwrap._
+import java.io.File
 
-    val file = new File("/path/to/markup.md")
-    val parser = MarkWrap.parserFor(file)
-    val html = parser.parseToHTML(file)
+val file = new File("/path/to/markup.md")
+val parser = MarkWrap.converterFor(file)
+val html = parser.parseToHTML(file)
+```
 
 From a string:
 
-    import org.clapper.markwrap._
+```scala
+import org.clapper.markwrap._
 
-    val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    val html = parser.parseToHTML("""This is some *Markdown* text""")
+val parser = MarkWrap.converterFor(MarkupType.Markdown)
+val html = parser.parseToHTML("""This is some *Markdown* text""")
+```
 
 ### Producing a complete HTML document
 
@@ -277,10 +324,12 @@ The `parseToHTMLDocument()` method produces a complete HTML document,
 with `<html>`, `<head>`, and `<body>` sections, as well as an optional
 cascading style sheet. The method's signature looks like this:
 
-    def parseToHTMLDocument(markupSource: Source,
-                            title: String,
-                            cssSource: Option[Source] = None,
-                            encoding: String  = "UTF-8"): String =
+```scala
+def parseToHTMLDocument(markupSource: Source,
+                        title: String,
+                        cssSource: Option[Source] = None,
+                        encoding: String  = "UTF-8"): String =
+```
 
 * `markupSource` is the markup to be rendered.
 * `title` is the title to be put in the document's `<title>` section.
@@ -298,7 +347,9 @@ it.
 The Scaladoc-generated the [API documentation][] is available locally.
 In addition, you can generate your own version with:
 
-    sbt doc
+```
+sbt doc
+```
 
 # Change log
 
@@ -330,7 +381,7 @@ request. Along with any patch you send:
 [API Documentation]: api/
 [Maven]: http://maven.apache.org/
 [Scala Maven Guide]: http://www.scala-lang.org/node/345
-[PegDown]: http://pegdown.org
+[flexmark-java]: https://github.com/vsch/flexmark-java
 [Markdown]: http://daringfireball.net/projects/markdown/
 [Textile]: http://textile.thresholdstate.com/
 [Mylyn]: http://www.eclipse.org/mylyn/
