@@ -110,21 +110,21 @@ The resulting jar file will be in the top-level `target` directory.
 MarkWrap provides a simple, unified API for various lightweight markup
 languages. There are two steps to use the API:
 
-* Get the parser for the desired lightweight markup language.
-* Call the parser's `parseToHTML()` method with the content
+* Get the converter for the desired lightweight markup language.
+* Call the converter's `parseToHTML()` method with the content.
 
 ## Getting the Desired Parser
 
-To obtain a parser, use the `org.clapper.markwrap.MarkWrap` object's
+To obtain a converter, use the `org.clapper.markwrap.MarkWrap` object's
 `converterFor()` method, passing it either:
 
 * a MIME type
 * a markup language constant
 * a `java.io.File` object, whose extension is used to determine the MIME type.
 
-### Parsing Markdown
+### Converting Markdown
 
-To get a [Markdown][] parser, call `MarkWrap.converterFor()` with:
+To get a [Markdown][] converter, call `MarkWrap.converterFor()` with:
 
 * the `MarkupType.Markdown` constant
 * the MIME type string "text/markdown"
@@ -179,9 +179,9 @@ renders as:
 </dl>
 ```
 
-### Parsing Textile
+### Converting Textile
 
-To get a [Textile][] parser, call `MarkWrap.converterFor()` with:
+To get a [Textile][] converter, call `MarkWrap.converterFor()` with:
 
 * the `MarkupType.Textile` constant
 * the MIME type string "text/textile"
@@ -189,9 +189,9 @@ To get a [Textile][] parser, call `MarkWrap.converterFor()` with:
 
 [Textile][] is parsed with the Eclipse [Mylyn][] *wikitext* parser API.
 
-### Parsing raw HTML
+### "Converting" raw HTML
 
-To get a passthrough parser for HTML or XHTML, call `MarkWrap.converterFor()`
+To get a passthrough converter for HTML or XHTML, call `MarkWrap.converterFor()`
 with:
 
 * the `MarkupType.HTML` or `Markup.XHTML` constants
@@ -199,12 +199,12 @@ with:
 * A `java.io.File` object specifying a file with one of these extensions:
   `.htm`, `.html`, `.xhtm`, `.xhtml`
 
-A passthrough HTML parser simply passing the HTML straight through,
+A passthrough HTML converter simply passes the HTML straight through,
 unmodified.
 
 ### Handling plain text
 
-To get a plaintext-to-HTML parser, call `MarkWrap.converterFor()` with:
+To get a plaintext-to-HTML converter, call `MarkWrap.converterFor()` with:
 
 * the `MarkupType.PlainText` constant
 * the MIME type string "text/plain"
@@ -215,78 +215,101 @@ The resulting plain text is simply wrapped in `<pre>` and `</pre>` tags.
 
 ### Examples
 
-#### Getting a Markdown parser
+#### Getting a converter via type
+
+If you call `converterFor()` with a `MarkupType` value, you get the
+converter directly:
 
 ```scala
 import org.clapper.markwrap._
 
-// Using the constant
-val parser1 = MarkWrap.converterFor(MarkupType.Markdown)
+val markdown = MarkWrap.converterFor(MarkupType.Markdown)
+val textile = MarkWrap.converterFor(MarkupType.Markdown)
+val html = MarkWrap.converterFor(MarkupType.HTML) // or MarkupType.XHTML
+val plain = MarkWrap.converterFor(MarkupType.PlainText)
 
-// Using the MIME type
-val parser2 = MarkWrap.converterFor("text/markdown")
-
-// Using a File object
-val parser3 = MarkWrap.converterFor(new java.io.File("foo.md"))
+markdown.parseToHTML("...")
 ```
 
-#### Getting a Textile parser
+#### Getting a converter via MIME type
+
+You can pass a (string) MIME type to `converterFor()`. The following
+MIME types are supported:
+
+* `text/textile`
+* `text/markdown`
+* `text/html`
+* `text/xhtml`
+* `text/plain`
+
+Passing any other MIME type causes an error.
+
+Because errors can occur, this version of `converterFor()` returns a
+`scala.util.Try`.  
+
 
 ```scala
 import org.clapper.markwrap._
 
-// Using the constant
-val parser1 = MarkWrap.converterFor(MarkupType.Textile)
+val mimeType = "text/markdown"
+MarkWrap.converterFor(mimeType) match {
+  case Success(converter) =>  converter.parseToHTML("...")
+  case Failure(exception) =>  // handle error
+}
 
-// Using the MIME type
-val parser2 = MarkWrap.converterFor("text/textile")
-
-// Using a File object
-val parser3 = MarkWrap.converterFor(new java.io.File("foo.textile"))
+// Or, monadically:
+MarkWrap.converterFor(mimeType).map { converter =>
+  converter.parseToHTML("...")
+} // you now have a Try[String]. If Success, it contains the HTML.
 ```
 
-#### Getting a pass-through HTML "parser"
+#### Getting a converter via filename
+
+You can pass a `java.io.File` object to `converterFor()`. MarkWrap will
+convert the file name to a MIME type (using the file's extension); then, it'll
+use the resulting MIME type to get the converter.
+
+The following extensions are supported:
+
+| extension                                                        | MIME type       | markup
+| ---------------------------------------------------------------- | --------------- | -------
+| `.md`, `.markdown`                                               | `text/markdown` | Markdown        |
+| `.textile`                                                       | `text/textile`  | Textile         |
+| `.htm`, `.html`                                                  | `text/html`     | HTML            |
+| `.xhtm`, `.xhtml`                                                | `text/xhtml`    | XHTML           |
+| `.txt`, `.TXT`, `.text`, `.TEXT`, `.cfg`, `.conf`, `.properties` | `text/plain`    | plain text      |
+
+Passing any other MIME type causes an error.
+
+Because errors can occur, this version of `converterFor()` returns a
+`scala.util.Try`.  
 
 ```scala
 import org.clapper.markwrap._
 
-// Using the constant
-val parser1 = MarkWrap.converterFor(MarkupType.XHTML)
+MarkWrap.converterFor(new java.io.File(pathToFile)) match {
+  case Success(converter) =>  converter.parseToHTML("...")
+  case Failure(exception) =>  // handle error
+}
 
-// Using the MIME type
-val parser2 = MarkWrap.converterFor("text/xhtml")
-
-// Using a File object
-val parser3 = MarkWrap.converterFor(new java.io.File("foo.html"))
+// Or, monadically:
+MarkWrap.converterFor(mimeType).map { converter =>
+  converter.parseToHTML("...")
+} // you now have a Try[String]. If Success, it contains the HTML.
 ```
 
-#### Getting a plain text "parser"
+## Converting the Markup
 
-```scala
-import org.clapper.markwrap._
-
-// Using the constant
-val parser1 = MarkWrap.converterFor(MarkupType.PlainText)
-
-// Using the MIME type
-val parser2 = MarkWrap.converterFor("text/plain")
-
-// Using a File object
-val parser3 = MarkWrap.converterFor(new java.io.File("foo.txt"))
-```
-
-## Parsing the Markup
-
-Once you have the correct parser, you can parse the markup using one of the
+Once you have the correct converter, you can parse the markup using one of the
 parsing methods.
 
-### Parsing to an HTML fragment
+### Converting to an HTML fragment
 
 The `parseToHTML()` methods produce HTML fragments, not complete HTML
 documents. (There's another `parseToHTMLDocument()` method that produces a
 complete document; see below for details.)
 
-#### Parsing from a Scala `Source`
+#### Reading from a Scala `Source`
 
 Example 1:
 
@@ -296,8 +319,9 @@ import scala.io.Source
 import java.io.File
 
 val file = new File("/path/to/markup.md")
-val parser = MarkWrap.converterFor(file)
-val html = parser.parseToHTML(Source.fromFile(file))
+val t: Try[String] = MarkWrap.converterFor(file).map { converter =>
+   converter.parseToHTML(Source.fromFile(file))
+}
 ```
 
 Example 2:
@@ -307,32 +331,8 @@ import org.clapper.markwrap._
 import scala.io.Source
 
 val markup = """This is some *Markdown* text"""
-val parser = MarkWrap.converterFor(MarkupType.Markdown)
-val html = parser.parseToHTML(Source.fromString(markup))
-```
-
-#### Parsing from a file or a string
-
-If you're parsing from a file or a string, there are some shortcut methods:
-
-From a `java.io.File`:
-
-```scala
-import org.clapper.markwrap._
-import java.io.File
-
-val file = new File("/path/to/markup.md")
-val parser = MarkWrap.converterFor(file)
-val html = parser.parseToHTML(file)
-```
-
-From a string:
-
-```scala
-import org.clapper.markwrap._
-
-val parser = MarkWrap.converterFor(MarkupType.Markdown)
-val html = parser.parseToHTML("""This is some *Markdown* text""")
+val converter = MarkWrap.converterFor(MarkupType.Markdown)
+val html = converter.parseToHTML(Source.fromString(markup))
 ```
 
 ### Producing a complete HTML document
@@ -378,7 +378,7 @@ The change log for all releases is [here][changelog].
 
 # Copyright and License
 
-MarkWrap is copyright &copy; 2009-2011 Brian M. Clapper and is released
+MarkWrap is copyright &copy; 2009-2018 Brian M. Clapper and is released
 under a [BSD License][].
 
 # Patches
