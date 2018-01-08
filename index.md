@@ -141,10 +141,27 @@ table syntax.
 
 **Strikethrough**
 
-`~~text~~` renders "text" as strikethrough (`<p><del>text</del></p>`).
+```
+~~text~~
+```
+ 
+renders "text" as strikethrough:
+ 
+```html
+<p><del>text</del></p>
+```
+
 **Subscript**
  
-`~text~` renders "text" as subscript(`<p><sub>text</sub></p>`)
+```
+~text~
+```
+ 
+renders "text" as subscript:
+
+```html
+<p><sub>text</sub></p>
+```
 
 **Definition lists**
 
