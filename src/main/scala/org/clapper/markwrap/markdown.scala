@@ -3,43 +3,27 @@
   This software is released under a BSD license, adapted from
   http://opensource.org/licenses/bsd-license.php
 
-  Copyright (c) 2010, Brian M. Clapper
+  Copyright (c) 2010-2018, Brian M. Clapper
   All rights reserved.
 
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are
-  met:
-
-   * Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
-
-   * Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
-
-   * Neither the names "clapper.org", "MarkWrap", nor the names of its
-    contributors may be used to endorse or promote products derived from
-    this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-  IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  See the accompanying license file for details.
   ---------------------------------------------------------------------------
 */
 
 package org.clapper.markwrap
 
-import scala.io.Source
+import java.util
 
-import org.pegdown.{PegDownProcessor, Extensions}
+import com.vladsch.flexmark.ext.definition.DefinitionExtension
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughSubscriptExtension
+
+import scala.io.Source
+import scala.collection.JavaConverters._
+import com.vladsch.flexmark.ext.tables.TablesExtension
+import com.vladsch.flexmark.html.HtmlRenderer
+import com.vladsch.flexmark.parser.Parser
+import com.vladsch.flexmark.util.options.MutableDataSet
+import grizzled.io.SourceReader
 
 /**
   * The `MarkdownParser` class parses the Markdown markup language,
@@ -52,10 +36,27 @@ import org.pegdown.{PegDownProcessor, Extensions}
   */
 private[markwrap] class MarkdownParser extends MarkWrapParser {
   val markupType = MarkupType.Markdown
-  val pegDown = new PegDownProcessor(Extensions.NONE |
-                                     Extensions.DEFINITIONS |
-                                     Extensions.TABLES |
-                                     Extensions.FENCED_CODE_BLOCKS)
+
+  type JBool = java.lang.Boolean
+
+  private def jBool(v: Boolean) = new JBool(v)
+
+  private val Extensions = util.Arrays.asList(
+    TablesExtension.create,
+    DefinitionExtension.create,
+    StrikethroughSubscriptExtension.create
+  )
+
+  private val (parser, renderer) = {
+    val options = new MutableDataSet()
+      .set(TablesExtension.COLUMN_SPANS, jBool(false))
+      .set(TablesExtension.APPEND_MISSING_COLUMNS, jBool(true))
+      .set(TablesExtension.DISCARD_EXTRA_COLUMNS, jBool(true))
+      .set(TablesExtension.HEADER_SEPARATOR_COLUMN_MATCH, jBool(true))
+      .set(Parser.EXTENSIONS, Extensions)
+
+    (Parser.builder(options).build, HtmlRenderer.builder(options).build)
+  }
 
   /** Parse a Markdown document, producing HTML. The generated HTML markup
     * does not contain HTML or BODY tags, so it is suitable for embedding in
@@ -66,6 +67,7 @@ private[markwrap] class MarkdownParser extends MarkWrapParser {
     * @return the formatted HTML
     */
   def parseToHTML(source: Source): String = {
-    pegDown.markdownToHtml(source mkString "")
+    val document = parser.parseReader(SourceReader(source))
+    renderer.render(document)
   }
 }

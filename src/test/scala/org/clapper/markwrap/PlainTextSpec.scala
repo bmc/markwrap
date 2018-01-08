@@ -2,17 +2,25 @@ package org.clapper.markwrap
 
 /** Test the plain text functions.
   */
-class PlainTextSpec extends BaseSpec {
-  "MarkWrap.PlainText" should "properly wrap text in <pre></pre>" in {
+class PlainTextSpec extends BaseFixtureSpec {
+
+  case class FixtureParam(parser: MarkWrapParser)
+
+  override def withFixture(test: OneArgTest) = {
+    val parser = MarkWrap.converterFor(MarkupType.PlainText)
+    parser.markupType shouldBe MarkupType.PlainText
+    withFixture(test.toNoArgTest(FixtureParam(parser)))
+  }
+
+  "MarkWrap.PlainText" should "properly wrap text in <pre></pre>" in { f =>
     val data = List(
       ("Test",        "<pre>Test</pre>"),
       ("_Test_",      "<pre>_Test_</pre>"),
       ("foo\nbar\n",  "<pre>foo\nbar</pre>")
     )
 
-    val parser = MarkWrap.parserFor(MarkupType.PlainText)
     for ((input, expected) <- data) {
-      parser.parseToHTML(input) shouldBe expected
+      f.parser.parseToHTML(input) shouldBe expected
     }
   }
 }

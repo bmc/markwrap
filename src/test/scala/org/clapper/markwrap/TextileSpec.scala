@@ -3,8 +3,17 @@ package org.clapper.markwrap
 /**
   * Tests the Textile functions.
   */
-class TextileSpec extends BaseSpec {
-  "TextileParser.parseToHTML" should "properly render HTML" in {
+class TextileSpec extends BaseFixtureSpec {
+
+  case class FixtureParam(parser: MarkWrapParser)
+
+  override def withFixture(test: OneArgTest) = {
+    val parser = MarkWrap.converterFor(MarkupType.Textile)
+    parser.markupType shouldBe MarkupType.Textile
+    withFixture(test.toNoArgTest(FixtureParam(parser)))
+  }
+
+  "TextileParser.parseToHTML" should "properly render HTML" in { f =>
     import scala.io.Source
 
     val data = List(
@@ -24,11 +33,8 @@ class TextileSpec extends BaseSpec {
       ("bc. foo",            "<pre><pre>foo\n</pre></pre>")
     )
 
-    val parser = MarkWrap.parserFor(MarkupType.Textile)
-    parser.markupType shouldBe MarkupType.Textile
-
     for((input, expected) <- data) {
-      parser.parseToHTML(input) shouldBe expected
+      f.parser.parseToHTML(input) shouldBe expected
     }
   }
 }

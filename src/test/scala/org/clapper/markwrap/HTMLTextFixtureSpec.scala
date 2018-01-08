@@ -1,6 +1,7 @@
 package org.clapper.markwrap
 
-class HTMLTextSpec extends BaseSpec {
+class HTMLTextFixtureSpec extends BaseSpec {
+
   "MarkWrap.HTML" should "properly render HTML" in {
     doType(MarkupType.HTML)
   }
@@ -16,7 +17,7 @@ class HTMLTextSpec extends BaseSpec {
       ("<p>_Test_</p>",      "<p>_Test_</p>")
     )
 
-    val parser = MarkWrap.parserFor(markupType)
+    val parser = MarkWrap.converterFor(markupType)
     for ((input, expected) <- data) {
       parser.parseToHTML(input) shouldBe expected
     }

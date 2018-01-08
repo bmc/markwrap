@@ -36,33 +36,41 @@
 
 import org.clapper.markwrap._
 import scala.io.Source
+import org.scalatest._
+
 /**
   * Tests the Markdown functions.
   */
-class MarkdownSpec extends BaseSpec {
-  "MarkdownParser.parseToHTML" should "produce valid HTML" in {
+class MarkdownSpec extends BaseFixtureSpec {
+
+  case class FixtureParam(parser: MarkWrapParser)
+
+  override def withFixture(test: OneArgTest) = {
+    val parser = MarkWrap.converterFor(MarkupType.Markdown)
+    parser.markupType shouldBe MarkupType.Markdown
+    withFixture(test.toNoArgTest(FixtureParam(parser)))
+  }
+
+  "MarkdownParser.parseToHTML" should "produce valid HTML" in { f =>
 
     val data = List(
-      ("*Test*",             "<p><em>Test</em></p>"),
-      ("_Test_",             "<p><em>Test</em></p>"),
-      ("**Test**",           "<p><strong>Test</strong></p>"),
-      ("__Test__",           "<p><strong>Test</strong></p>"),
-      ("___Test___",         "<p><strong><em>Test</em></strong></p>"),
-      ("***Test***",         "<p><strong><em>Test</em></strong></p>"),
-      ("abc\n===\n\ntest",   "<h1>abc</h1>\n<p>test</p>")
+      ("*Test*",             "<p><em>Test</em></p>\n"),
+      ("_Test_",             "<p><em>Test</em></p>\n"),
+      ("**Test**",           "<p><strong>Test</strong></p>\n"),
+      ("__Test__",           "<p><strong>Test</strong></p>\n"),
+      ("___Test___",         "<p><em><strong>Test</strong></em></p>\n"),
+      ("***Test***",         "<p><em><strong>Test</strong></em></p>\n"),
+      ("abc\n===\n\ntest",   "<h1>abc</h1>\n<p>test</p>\n")
     )
 
-    val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    assertResult(MarkupType.Markdown, "Markup type") {parser.markupType}
-
     for((input, expected) <- data) {
-      parser.parseToHTML(input) shouldBe expected
+      f.parser.parseToHTML(input) shouldBe expected
     }
   }
 
-  it should "not do anything special with hard line wraps" in {
+  it should "handle soft line breaks" in { f =>
     val data = List(
-      ("test\n*test*",     "<p>test <em>test</em></p>"),
+      ("test\n*test*",     "<p>test\n<em>test</em></p>\n"),
 
       ("""
          |* this is a list
@@ -73,36 +81,42 @@ class MarkdownSpec extends BaseSpec {
 
 
        """<ul>
-         |  <li>this is a list  with line breaks in it.</li>
-         |  <li>This is line two  of the list.</li>
-         |</ul>""".stripMargin),
-
-      ("soft  \nwrap\n",   "<p>soft<br/>wrap</p>")
+         |<li>this is a list
+         |with line breaks in it.</li>
+         |<li>This is line two
+         |of the list.</li>
+         |</ul>
+         |""".stripMargin)
     )
 
-    val parser = MarkWrap.parserFor(MarkupType.Markdown)
     for((input, expected) <- data) {
-      parser.parseToHTML(input) shouldBe expected
+      f.parser.parseToHTML(input) shouldBe expected
     }
   }
 
-  it should "not expand quotes into smart quote entities" in {
-    val parser = MarkWrap.parserFor(MarkupType.Markdown)
-
-    parser.parseToHTML("""This has "quotes" in it.""") shouldBe (
-      """<p>This has "quotes" in it.</p>"""
+  it should "handle hard line breaks" in { f =>
+    val data = List(
+      ("soft  \nwrap\n",   "<p>soft<br />\nwrap</p>\n")
     )
+
+    for((input, expected) <- data) {
+      f.parser.parseToHTML(input) shouldBe expected
+    }
   }
 
-  it should "not prettify em- and en-dashes" in {
-    val parser = MarkWrap.parserFor(MarkupType.Markdown)
+  it should "expand quotes into smart quote entities" in { f =>
+    val parser = MarkWrap.converterFor(MarkupType.Markdown)
 
-    parser.parseToHTML("An em-dash---and an en-dash--are here.") shouldBe (
-      "<p>An em-dash---and an en-dash--are here.</p>"
-    )
+    f.parser.parseToHTML("""This has "quotes" in it.""") shouldBe
+      "<p>This has &quot;quotes&quot; in it.</p>\n"
   }
 
-  "MarkdownParser.parseToHTMLDocument" should "do title substitution" in {
+  it should "not prettify em- and en-dashes" in { f =>
+    f.parser.parseToHTML("An em-dash---and an en-dash--are here.") shouldBe
+      "<p>An em-dash---and an en-dash--are here.</p>\n"
+  }
+
+  "MarkdownParser.parseToHTMLDocument" should "do title substitution" in { f =>
 
     val data = List(
       ("test document", "test title",
@@ -111,31 +125,130 @@ class MarkdownSpec extends BaseSpec {
          |<title>test title</title>""".stripMargin)
     )
 
-    val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    assertResult(MarkupType.Markdown, "Markup type") {parser.markupType}
-
     for((input, title, expected) <- data) {
-      val result = parser.parseToHTMLDocument(Source.fromString(input),
-                                              title, None)
+      val result = f.parser.parseToHTMLDocument(Source.fromString(input),
+                                                title, None)
       result.startsWith(expected) shouldBe true
     }
   }
 
-  it should "handle HTML entities" in {
-
+  it should "expand HTML entities into their Unicode counterparts" in { f =>
     val data = List(
       // markdown            result contains
-      ("&copy;",             "<p>&copy;</p>"),
-      ("&emdash;",           "<p>&emdash;</p>")
+      ("&copy;",             "<p>\u00a9</p>"),
+      ("&#x2122;",           "<p>\u2122</p>"),
+      ("&#8482;",            "<p>\u2122</p>"),
+      ("&Hat;",              "<p>^</p>"),
+      ("&cent;",             "<p>\u00a2</p>"),
+      ("&ugrave;",           "<p>\u00f9</p>"),
+      ("&reg;",              "<p>\u00ae</p>"),
+      ("&half;",             "<p>\u00bd</p>"),
+      ("&frac12;",           "<p>\u00bd</p>"),
+      ("&frac14;",           "<p>\u00bc</p>")
     )
 
-    val parser = MarkWrap.parserFor(MarkupType.Markdown)
-    assertResult(MarkupType.Markdown, "Markup type") {parser.markupType}
+    for((input, expected) <- data) {
+      val result = f.parser.parseToHTMLDocument(Source.fromString(input),
+                                                "", None)
+      result should include (expected)
+    }
+  }
+
+  it should "escape unknown HTML entities" in { f =>
+    val data = List(
+      // markdown            result contains
+      ("&copyr;",            "<p>&amp;copyr;</p>"),
+      ("&Hart;",             "<p>&amp;Hart;</p>"),
+      ("&quarter;",          "<p>&amp;quarter;</p>")
+    )
 
     for((input, expected) <- data) {
-      val result = parser.parseToHTMLDocument(Source.fromString(input),
-                                              "", None)
-      result.contains(expected) shouldBe true
+      val result = f.parser.parseToHTMLDocument(Source.fromString(input),
+                                                "", None)
+      result should include (expected)
     }
+  }
+
+  it should "render tables" in { f =>
+    val markdown1 =
+      """
+        >| head1 | head2 |
+        >| ----- | ----- |
+        >| col 1 | col 2 |
+        >| col 3 | col 3 |
+      """.stripMargin('>')
+    val expected1 =
+      """|<table>
+         |<thead>
+         |<tr><th>head1</th><th>head2</th></tr>
+         |</thead>
+         |<tbody>
+         |<tr><td>col 1</td><td>col 2</td></tr>
+         |<tr><td>col 3</td><td>col 3</td></tr>
+         |</tbody>
+         |</table>
+         |""".stripMargin
+    f.parser.parseToHTML(markdown1) shouldBe expected1
+
+    val markdown2 =
+      """
+        >| Left-aligned | Center-aligned | Right-aligned |
+        >| :---         |      :---:     |          ---: |
+        >| git status   | git status     | git status    |
+        >| git status   | git status     | git status    |
+       """.stripMargin('>')
+
+    val expected2 =
+      """|<table>
+         |<thead>
+         |<tr><th align="left">Left-aligned</th><th align="center">Center-aligned</th><th align="right">Right-aligned</th></tr>
+         |</thead>
+         |<tbody>
+         |<tr><td align="left">git status</td><td align="center">git status</td><td align="right">git status</td></tr>
+         |<tr><td align="left">git status</td><td align="center">git status</td><td align="right">git status</td></tr>
+         |</tbody>
+         |</table>
+         |""".stripMargin
+    f.parser.parseToHTML(markdown2) shouldBe expected2
+  }
+
+  it should "render strikethrough" in { f =>
+    f.parser.parseToHTML("~~hello~~") shouldBe "<p><del>hello</del></p>\n"
+  }
+
+  it should "render subscript" in { f =>
+    f.parser.parseToHTML("~hello~") shouldBe "<p><sub>hello</sub></p>\n"
+  }
+
+  it should "render a definition list" in { f =>
+    val markdown1 =
+      """|Orange
+         |:   The fruit of an evergreen tree of the genus Citrus.
+      """.stripMargin
+    val expected1 =
+      """|<dl>
+         |<dt>Orange</dt>
+         |<dd>The fruit of an evergreen tree of the genus Citrus.</dd>
+         |</dl>
+         |""".stripMargin
+    f.parser.parseToHTML(markdown1) shouldBe expected1
+
+    val markdown2 =
+      """|Orange
+         |:   The fruit of an evergreen tree of the genus Citrus.
+         |Apple
+         |:   Pomaceous fruit of plants of the genus Malus in
+         |    the family Rosaceae.
+         |""".stripMargin
+    val expected2 =
+      """|<dl>
+         |<dt>Orange</dt>
+         |<dd>The fruit of an evergreen tree of the genus Citrus.</dd>
+         |<dt>Apple</dt>
+         |<dd>Pomaceous fruit of plants of the genus Malus in
+         |the family Rosaceae.</dd>
+         |</dl>
+         |""".stripMargin
+    f.parser.parseToHTML(markdown1) shouldBe expected1
   }
 }

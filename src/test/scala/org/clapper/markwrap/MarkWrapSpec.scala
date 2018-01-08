@@ -6,7 +6,7 @@ import java.io.File
   * Tests the MarkWrap functions.
   */
 class MarkWrapSpec extends BaseSpec {
-  "MarkWrap.parserFor" should "return the right type for file extensions" in {
+  "MarkWrap.converterFor" should "return the right type for file extensions" in {
     val fData = List(
       (MarkupType.Markdown,  "foo.md"),
       (MarkupType.Markdown,  "foo.markdown"),
@@ -22,6 +22,15 @@ class MarkWrapSpec extends BaseSpec {
       (MarkupType.PlainText, "foo.conf")
     )
 
+    for ((expected, fn) <- fData) {
+      val t = MarkWrap.converterFor(new File(fn))
+      t shouldBe 'success
+      t.get.markupType shouldBe expected
+    }
+  }
+
+  it should "return the right parser for a valid MIME type" in {
+
     val mtData = List(
       (MarkupType.Markdown,  "text/markdown"),
       (MarkupType.Textile,   "text/textile"),
@@ -30,6 +39,14 @@ class MarkWrapSpec extends BaseSpec {
       (MarkupType.PlainText, "text/plain")
     )
 
+    for ((expected, mimeType) <- mtData) {
+      val t = MarkWrap.converterFor(mimeType)
+      t shouldBe 'success
+      t.get.markupType shouldBe expected
+    }
+  }
+
+  it should "return the right parser for a MarkWrap parser type" in {
     val typeData = List(
       MarkupType.Markdown,
       MarkupType.Textile,
@@ -38,16 +55,17 @@ class MarkWrapSpec extends BaseSpec {
       MarkupType.PlainText
     )
 
-    for ((expected, fn) <- fData) {
-      MarkWrap.parserFor(new File(fn)).markupType shouldBe expected
-    }
-
-    for ((expected, mimeType) <- mtData) {
-      MarkWrap.parserFor(mimeType).markupType shouldBe expected
-    }
-
     for (parserType <- typeData) {
-      MarkWrap.parserFor(parserType).markupType shouldBe parserType
+      val parser = MarkWrap.converterFor(parserType)
+      parser.markupType shouldBe parserType
     }
+  }
+
+  it should "return a Failure for a bad MIME type" in {
+    MarkWrap.converterFor("application/json") shouldBe 'failure
+  }
+
+  it should "return a Failure for an unknown extension" in {
+    MarkWrap.converterFor(new File("foo.c")) shouldBe 'failure
   }
 }

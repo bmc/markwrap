@@ -3,35 +3,10 @@
   This software is released under a BSD license, adapted from
   http://opensource.org/licenses/bsd-license.php
 
-  Copyright (c) 2010, Brian M. Clapper
+  Copyright (c) 2010-2018, Brian M. Clapper
   All rights reserved.
 
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are
-  met:
-
-   * Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
-
-   * Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
-
-   * Neither the names "clapper.org", "MarkWrap", nor the names of its
-    contributors may be used to endorse or promote products derived from
-    this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-  IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  See the accompanying license file for details.
   ---------------------------------------------------------------------------
 */
 
@@ -43,8 +18,9 @@
 package org.clapper.markwrap
 
 import scala.io.Source
-
 import java.io.File
+
+import scala.util.{Failure, Success, Try}
 
 /**
   * The common parser interface.
@@ -100,7 +76,7 @@ trait MarkWrapParser {
     *
     * @return the formatted HTML document.
     */
-  def parseToHTMLDocument(markupSource: Source, 
+  def parseToHTMLDocument(markupSource: Source,
                           title: String,
                           cssSource: Option[Source] = None,
                           encoding: String  = "UTF-8"): String = {
@@ -194,8 +170,19 @@ object MarkWrap {
   /** Get a parser for the specified type.
     *
     * @param parserType  the parser type
+    *
+    * @return the parser
     */
-  def parserFor(parserType: MarkupType): MarkWrapParser = parserType match {
+  @deprecated("Use converterFor", "1.2.0")
+  def parserFor(parserType: MarkupType): MarkWrapParser = {
+    converterFor(parserType)
+  }
+
+  /** Get a converter (parser) for the specified type.
+    *
+    * @param parserType  the parser type
+    */
+  def converterFor(parserType: MarkupType): MarkWrapParser = parserType match {
     case MarkupType.Markdown  => new MarkdownParser
     case MarkupType.Textile   => new TextileParser
     case MarkupType.HTML      => new VerbatimHandler
@@ -211,11 +198,26 @@ object MarkWrap {
     *
     * @throws IllegalArgumentException unsupported MIME type
     */
-  def parserFor(mimeType: String): MarkWrapParser = {
-    def BadMimeType = 
-      throw new IllegalArgumentException("Unknown MIME type: " + mimeType)
+  @deprecated("Use converterFor", "1.2.0")
+  def parserFor(mimeType: String): MarkWrapParser = converterFor(mimeType).get
 
-    MimeTypes.get(mimeType).map(p => parserFor(p)).getOrElse(BadMimeType)
+  /** Get a converter (parser) for the specified MIME type.
+    *
+    * @param mimeType  the MIME type
+    *
+    * @return a `Success` containing the appropriate object, or a `Failure`
+    *         if the MIME type isn't supported.
+    *
+    * @throws IllegalArgumentException unsupported MIME type
+    */
+  def converterFor(mimeType: String): Try[MarkWrapParser] = {
+    def BadMimeType =
+      new IllegalArgumentException(s"""Unsupported MIME type $mimeType""")
+
+    MimeTypes
+      .get(mimeType)
+      .map { p => Success(converterFor(p)) }
+      .getOrElse(Failure(new IllegalArgumentException(BadMimeType)))
   }
 
   /** Get a parser for the specified file.
@@ -226,6 +228,17 @@ object MarkWrap {
     *
     * @throws IllegalArgumentException unsupported MIME type
     */
-  def parserFor(f: File): MarkWrapParser =
-    parserFor(MimeTypeMap.getContentType(f))
+  @deprecated("Use converterFor", "1.2.0")
+  def parserFor(f: File): MarkWrapParser = converterFor(f).get
+
+  /** Get a converter (parser) for the specified file.
+    *
+    * @param f  the file
+    *
+    * @return a `Success` containing the appropriate object, or a `Failure`
+    *         if the file type isn't supported.
+    */
+  def converterFor(f: File): Try[MarkWrapParser] = {
+    converterFor(MimeTypeMap.getContentType(f))
+  }
 }

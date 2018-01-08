@@ -5,7 +5,7 @@ name := "markwrap"
 
 organization := "org.clapper"
 
-version := "1.1.2"
+version := "1.2.0"
 
 licenses := Seq("BSD" -> url("http://software.clapper.org/markwrap/license.html"))
 
@@ -31,15 +31,16 @@ bintrayPackageLabels := Seq("library", "markdown", "textile", "scala")
 // ScalaTest dependendency
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 )
 
 // ---------------------------------------------------------------------------
 // Other dependendencies
 
 libraryDependencies ++= Seq(
-    "org.fusesource.wikitext" % "textile-core" % "1.4",
-    "org.pegdown" % "pegdown" % "1.6.0"
+  "org.fusesource.wikitext" % "textile-core" % "1.4",
+  "com.vladsch.flexmark" % "flexmark-all" % "0.28.24",
+  "org.clapper" %% "grizzled-scala" % "4.4.2"
 )
 
 // ---------------------------------------------------------------------------
@@ -53,7 +54,7 @@ publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
-pomExtra := (
+pomExtra :=
   <scm>
     <url>git@github.com:bmc/markwrap.git/</url>
     <connection>scm:git:git@github.com:bmc/markwrap.git</connection>
@@ -65,4 +66,4 @@ pomExtra := (
       <url>https://github.com/bmc</url>
     </developer>
   </developers>
-)
+
